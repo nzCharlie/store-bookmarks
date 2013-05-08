@@ -17,7 +17,7 @@
 	<bean class="com.googlecode.objectify.spring.ObjectifyFactoryBean" p:basePackage="com.bookmarks.models" />
 
 	<context:component-scan base-package="com.bookmarks" />
-	<mvc:annotation-driven />
+	<mvc:annotation-driven conversion-service="conversionService"/>
  
 	<bean
 	   class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -28,5 +28,25 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+            	<ref bean="restBookmarkConverter" />
+            </set>
+        </property>
+        <property name="formatters">
+            <set>
+<!--                 <bean class="org.example.MyFormatter"/> -->
+<!--                 <bean class="org.example.MyAnnotationFormatterFactory"/> -->
+            </set>
+        </property>
+        <property name="formatterRegistrars">
+            <set>
+<!--                 <bean class="org.example.MyFormatterRegistrar"/> -->
+            </set>
+        </property>
+    </bean>
  
 </beans>

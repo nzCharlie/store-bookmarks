@@ -21,5 +21,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-tx-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-web-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-webmvc-3.2.0.RELEASE.jar"/>
+	<classpathentry kind="var" path="JERSEY_HOME/contribs/jersey-spring-1.17.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAXB_LIB"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JERSEY_LIB"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
