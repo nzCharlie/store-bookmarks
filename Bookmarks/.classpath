@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-beans-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-context-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-context-support-3.2.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-core-3.2.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-core-3.2.0.RELEASE.jar" sourcepath="/home/charlie/.m2/repository/org/springframework/spring-core/3.2.0.RELEASE/spring-core-3.2.0.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-expression-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-jdbc-3.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-js-resources-2.2.1.RELEASE.jar"/>

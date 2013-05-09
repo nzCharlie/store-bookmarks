@@ -46,6 +46,9 @@ public class BookmarkDaoImpl implements BookmarkDao {
 		ofy.save().entities(bookmark).now();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.bookmarks.dao.BookmarkDao#delete1Bookmark(java.lang.Long)
+	 */
 	@Override
 	public void delete1Bookmark(Long id) {
 		Objectify ofy = objectifyFactory.begin();
