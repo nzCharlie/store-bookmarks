@@ -87,7 +87,7 @@ public class RestfulBookmarkService {
 	@Path("update")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response updateBookmark(RestBookmark restBookmark) {
-		return saveBookmark(restBookmark);
+		return saveOrUpdateBookmarks(restBookmark);
 	}
 	
 	/**
