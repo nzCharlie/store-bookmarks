@@ -3,6 +3,8 @@
  */
 package com.bookmarks.dao.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -53,6 +55,15 @@ public class BookmarkDaoImpl implements BookmarkDao {
 	public void delete1Bookmark(Long id) {
 		Objectify ofy = objectifyFactory.begin();
 		ofy.delete().type(Bookmark.class).id(id).now();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.bookmarks.dao.BookmarkDao#getAllBookmarks()
+	 */
+	@Override
+	public List<Bookmark> getAllBookmarks() {
+		Objectify ofy = objectifyFactory.begin();
+		return ofy.load().type(Bookmark.class).list();
 	}
 
 }

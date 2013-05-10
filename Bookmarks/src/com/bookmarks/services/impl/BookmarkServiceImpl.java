@@ -3,6 +3,9 @@
  */
 package com.bookmarks.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +52,14 @@ public class BookmarkServiceImpl implements BookmarkService {
 	@Override
 	public void deleteBookmark(Long id) {
 		this.dao.delete1Bookmark(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.bookmarks.services.BookmarkService#getAllBookmarks()
+	 */
+	@Override
+	public List<Bookmark> getAllBookmarks() {
+		return this.dao.getAllBookmarks();
 	}
 
 }

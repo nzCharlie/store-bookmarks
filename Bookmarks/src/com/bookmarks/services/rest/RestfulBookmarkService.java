@@ -3,7 +3,9 @@
  */
 package com.bookmarks.services.rest;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -33,7 +35,6 @@ import com.bookmarks.services.BookmarkService;
 public class RestfulBookmarkService {
 
 	private BookmarkService bookmarkService;
-	
 	private ConversionService conversionService;
 
 	/**
@@ -52,12 +53,20 @@ public class RestfulBookmarkService {
 		this.conversionService = conversionService;
 	}
 
+	@GET
+	@Path("list")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public List<RestBookmark> getAllBookmarks() {
+		List<Bookmark> allBookmarks = this.bookmarkService.getAllBookmarks();
+		return Arrays.asList(this.conversionService.convert(allBookmarks, RestBookmark[].class));
+	}
+	
 	/**
 	 * @param id
 	 * @return
 	 */
 	@GET
-	@Path("get/{id}")
+	@Path("{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public RestBookmark getBookmark(@PathParam("id") Long id) {
 		Bookmark bookmark = this.bookmarkService.getBookmark(id);
@@ -69,7 +78,6 @@ public class RestfulBookmarkService {
 	 * @return
 	 */
 	@POST
-	@Path("update")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response updateBookmark(RestBookmark restBookmark) {
 		return saveOrUpdateBookmarks(restBookmark);
@@ -80,7 +88,6 @@ public class RestfulBookmarkService {
 	 * @return
 	 */
 	@PUT
-	@Path("save")
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response saveBookmark(RestBookmark restBookmark) {
 		restBookmark.setId(null); // should not specify id
@@ -104,7 +111,7 @@ public class RestfulBookmarkService {
 	 * @param id
 	 */
 	@DELETE
-	@Path("delete/{id}")
+	@Path("{id}")
 	public void deleteBookmark(@PathParam("id") Long id) {
 		this.bookmarkService.deleteBookmark(id);
 	}

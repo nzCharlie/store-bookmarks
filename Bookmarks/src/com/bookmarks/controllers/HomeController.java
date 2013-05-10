@@ -14,21 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  */
 @Controller
-@RequestMapping({"/hello", "/"})
-public class BookmarkTestController {
+@RequestMapping("/")
+public class HomeController {
 
 	/**
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.GET)
 	public String index() {
-		return "redirect:/hello/word";
-	}
-	
-	@RequestMapping(value="/{name}", method=RequestMethod.GET)
-	public String hello(@PathVariable String name, ModelMap model) {
-		model.addAttribute("name", name);
-		return "hello";
+		return "index";
 	}
 	
 }

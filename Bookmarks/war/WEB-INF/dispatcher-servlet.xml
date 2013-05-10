@@ -48,5 +48,7 @@
             </set>
         </property>
     </bean>
+    
+    <mvc:view-controller path="partials/bookmark-list" view-name="partials/bookmark-list" />
  
 </beans>
