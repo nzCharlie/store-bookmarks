@@ -3,7 +3,6 @@
  */
 package com.bookmarks.services.rest;
 
-import java.net.URI;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -14,15 +13,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.bookmarks.models.Bookmark;
@@ -40,16 +35,6 @@ public class RestfulBookmarkService {
 	private BookmarkService bookmarkService;
 	
 	private ConversionService conversionService;
-	
-	private UriInfo uriInfo;
-	
-	/**
-	 * @param uriInfo the uriInfo to set
-	 */
-	@Context
-	public void setUriInfo(UriInfo uriInfo) {
-		this.uriInfo = uriInfo;
-	}
 
 	/**
 	 * @param bookmarkService the bookmarkService to set
