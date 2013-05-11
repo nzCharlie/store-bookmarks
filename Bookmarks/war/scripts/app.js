@@ -2,13 +2,12 @@
 
 /* App Module */
 
-angular.module('bookmarks', ['ui.bootstrap', 'bookmarksServices']).
+angular.module('bookmarks', ['ui.bootstrap', 'bookmarksServices', 'sessionService']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/bookmarks', {
     	  templateUrl: '/partials/bookmark-list', 
-    	  controller: BookmarksListCtrl,
-    	  reloadOnSearch: true
+    	  controller: BookmarksListCtrl
       }).
       when('/bookmarks/add', {
     	  templateUrl: '/partials/bookmark-detail', 

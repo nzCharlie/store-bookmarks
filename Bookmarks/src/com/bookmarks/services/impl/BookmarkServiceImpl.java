@@ -36,7 +36,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 	 */
 	@Override
 	public void saveOrUpdateBookmark(Bookmark bookmark) {
-		bookmark.setUpdate(new Date());
+		bookmark.setUpdated(new Date());
 		this.dao.saveOrUpdateBookmark(bookmark);
 	}
 

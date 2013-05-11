@@ -27,7 +27,7 @@ public class Bookmark {
 	
 	private Date created;
 	
-	private Date update;
+	private Date updated;
 	
 	/**
 	 * @return the id
@@ -92,14 +92,14 @@ public class Bookmark {
 	/**
 	 * @return the update
 	 */
-	public Date getUpdate() {
-		return update;
+	public Date getUpdated() {
+		return updated;
 	}
 	/**
 	 * @param update the update to set
 	 */
-	public void setUpdate(Date update) {
-		this.update = update;
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 	
 }

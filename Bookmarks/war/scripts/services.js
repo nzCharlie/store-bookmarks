@@ -9,3 +9,9 @@ factory('Bookmark', function($resource){
 		create: {method: 'PUT', params:{bookmarkId:''}}
 	});
 });
+
+angular.module('sessionService', []).
+factory('Session', function(){
+	var session = {};
+	return session;
+});

@@ -20,10 +20,10 @@ function AboutCtrl($scope, $rootScope) {
 	$rootScope.$broadcast('switchNav', 'about');
 }
 
-function BookmarksListCtrl($scope, Bookmark, $rootScope) {
+function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
 	var load = function () {
 		console.log('refreshing');
-		$scope.bookmarks = Bookmark.query();		
+		$scope.bookmarks = Bookmark.query();
 	};
 		
 	$scope.$on('refresh', load);
@@ -31,8 +31,19 @@ function BookmarksListCtrl($scope, Bookmark, $rootScope) {
 	$scope.deleteBookmark = function (bookmark) {
 		bookmark.$delete({bookmarkId: bookmark.id}, load);
 	}
+	
 	load();
 	$rootScope.$broadcast('switchNav', 'home');
+	
+	console.log("sesion sort selection is currently " + Session.sortSelection );
+	
+	$scope.sortSelection = Session.sortSelection ? Session.sortSelection : 'name';
+	$scope.$watch('sortSelection', function() {
+		Session.sortSelection = $scope.sortSelection;
+		console.log("updating sesion sort selection to " + Session.sortSelection );
+	});
+	
+	console.log("list controller finished.")
 }
 
 function BookmarkAddCtrl($scope, Bookmark, $location, $rootScope) {

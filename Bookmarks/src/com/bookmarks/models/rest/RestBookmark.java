@@ -102,14 +102,14 @@ public class RestBookmark {
 	/**
 	 * @return the update
 	 */
-	public Date getUpdate() {
-		return this.entity.getUpdate();
+	public Date getUpdated() {
+		return this.entity.getUpdated();
 	}
 	/**
 	 * @param update the update to set
 	 */
-	public void setUpdate(Date update) {
-		this.entity.setUpdate(update);
+	public void setUpdated(Date updated) {
+		this.entity.setUpdated(updated);
 	}
 	
 	/**
