@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Bookmarks</title>
+  <meta name="fragment" content="!" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/spacelab/bootstrap.min.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -56,11 +57,8 @@
       .container .credit {
         margin: 20px 0;
       }
-
-      code {
-        font-size: 80%;
-      }
   </style>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
   <script src="scripts/app.js"></script>
@@ -86,8 +84,8 @@
             <a class="brand" href="#">Bookmarks</a>
             <div class="nav-collapse collapse" collapse="isCollapsed">
               <ul class="nav">
-                <li class="active"><a href="#"><i class="icon-home"></i> Home</a></li>
-                <li><a href="#/about">About</a></li>
+                <li ng-class="homeNavActive" id="homeNav"><a href="#/bookmarks"><i class="icon-home"></i> Home</a></li>
+                <li ng-class="aboutNavActive" id="aboutNav"><a href="#/about"><i class="icon-user"></i> About</a></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div>

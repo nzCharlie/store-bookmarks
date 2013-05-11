@@ -19,19 +19,33 @@ public class Bookmark {
 	@Id
 	private Long id;
 	
+	private String name;
+	
 	private String url;
-	
-	private String user;
-	
+		
 	private String description;
 	
 	private Date created;
+	
+	private Date update;
 	
 	/**
 	 * @return the id
 	 */
 	public Long getId() {
 		return id;
+	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 	/**
 	 * @param id the id to set
@@ -64,18 +78,6 @@ public class Bookmark {
 		this.url = url;
 	}
 	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return user;
-	}
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
-		this.user = user;
-	}
-	/**
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -86,6 +88,18 @@ public class Bookmark {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	/**
+	 * @return the update
+	 */
+	public Date getUpdate() {
+		return update;
+	}
+	/**
+	 * @param update the update to set
+	 */
+	public void setUpdate(Date update) {
+		this.update = update;
 	}
 	
 }

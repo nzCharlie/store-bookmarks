@@ -52,6 +52,18 @@ public class RestBookmark {
 		this.entity.setId(id);
 	}
 	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return this.entity.getName();
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.entity.setName(name);
+	}
+	/**
 	 * @return the created
 	 */
 	public Date getCreated() {
@@ -76,18 +88,6 @@ public class RestBookmark {
 		this.entity.setUrl(url);
 	}
 	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return this.entity.getUser();
-	}
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
-		this.entity.setUser(user);
-	}
-	/**
 	 * @return the description
 	 */
 	public String getDescription() {
@@ -98,6 +98,18 @@ public class RestBookmark {
 	 */
 	public void setDescription(String description) {
 		this.entity.setDescription(description);
+	}
+	/**
+	 * @return the update
+	 */
+	public Date getUpdate() {
+		return this.entity.getUpdate();
+	}
+	/**
+	 * @param update the update to set
+	 */
+	public void setUpdate(Date update) {
+		this.entity.setUpdate(update);
 	}
 	
 	/**

@@ -4,6 +4,7 @@
 package com.bookmarks.services.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 	 */
 	@Override
 	public void saveOrUpdateBookmark(Bookmark bookmark) {
+		bookmark.setUpdate(new Date());
 		this.dao.saveOrUpdateBookmark(bookmark);
 	}
 
