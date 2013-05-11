@@ -2,10 +2,18 @@
 
 /* Controllers */
 
+function AboutCtrl($scope) {
+	// do nothing;
+}
+
 function BookmarksListCtrl($scope, Bookmark) {
 	$scope.bookmarks = Bookmark.query();
 }
 
-function CollapseCtrl($scope) {
+function MenuCtrl($scope) {
 	$scope.isCollapsed = true;
+}
+
+function BookmarkAddCtrl($scope, Bookmark) {
+	
 }

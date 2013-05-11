@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <title>Bookmarks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/bootstrap.min.css">
-  <link rel="stylesheet" href="styles/bootstrap-responsive.min.css" >
+  <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/spacelab/bootstrap.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
   <style>
       /* Sticky footer styles
       -------------------------------------------------- */
@@ -60,12 +61,12 @@
         font-size: 80%;
       }
   </style>
-  <script src="lib/angular/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers.js"></script>
   <script src="scripts/services.js"></script>
-  <script src="lib/angular/angular-resource.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
 </head>
 <body>
 
@@ -75,9 +76,9 @@
 
       <!-- Fixed navbar -->
       <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner" ng-controller="CollapseCtrl">
+        <div class="navbar-inner" ng-controller="MenuCtrl">
           <div class="container">
-            <button type="button" class="btn btn-navbar" ng-click="isCollapsed = !isCollapsed">
+            <button type="button" class="btn btn-navbar" ng-model="isCollapsed" btn-checkbox>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -85,8 +86,8 @@
             <a class="brand" href="#">Bookmarks</a>
             <div class="nav-collapse collapse" collapse="isCollapsed">
               <ul class="nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
+                <li class="active"><a href="#"><i class="icon-home"></i> Home</a></li>
+                <li><a href="#/about">About</a></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div>
@@ -101,9 +102,7 @@
 
     <div id="footer">
       <div class="container">
-        <p class="muted credit">
-        	Project by <a href="http://nz.linkedin.com/in/charlesjiang/">Charles Jiang</a>, designed based on <a href="http://twitter.github.io/bootstrap/examples/sticky-footer-navbar.html">Bootstrap example</a>.
-        </p>
+        <p class="muted credit">Project by <a href="http://nz.linkedin.com/in/charlesjiang/">Charles Jiang</a>.</p>
       </div>
     </div>
     

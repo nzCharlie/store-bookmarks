@@ -50,5 +50,7 @@
     </bean>
     
     <mvc:view-controller path="partials/bookmark-list" view-name="partials/bookmark-list" />
+    <mvc:view-controller path="partials/bookmark-detail" view-name="partials/bookmark-detail" />
+    <mvc:view-controller path="partials/about" view-name="partials/about" />
  
 </beans>
