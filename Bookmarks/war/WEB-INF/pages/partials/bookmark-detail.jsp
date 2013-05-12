@@ -37,7 +37,7 @@
     			<div class="input-prepend">
     				<span class="add-on"><i class="icon-edit"></i></span>
 					<textarea name="description" class="input-xxlarge"
-						placeholder="Note for the bookmark" rows="1"
+						ng-model="description" placeholder="Note for the bookmark" rows="1"
 						auto-grow='description'></textarea>
 				</div>
     		</div>
