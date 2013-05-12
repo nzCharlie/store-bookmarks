@@ -73,6 +73,9 @@ function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
 	load();
 	$rootScope.$broadcast('switchNav', 'home');	
 
+	$scope.hasDescription = function (bookmark) {
+		return $.trim(bookmark.description).length > 0;
+	}
 	
 	console.log("list controller finished.")
 }
@@ -127,9 +130,9 @@ function BookmarkFormCtrl($scope) {
 	
 	$scope.submit = function () {
 		var bookmark = {
-			"name": $scope.name,
+			"name": $.trim($scope.name),
 			"url": $scope.url,
-			"description": $scope.description
+			"description": $.trim($scope.description)
 		}
 		console.log(bookmark);
 

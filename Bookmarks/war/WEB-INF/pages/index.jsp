@@ -45,8 +45,6 @@
         }
       }
 
-
-
       /* Custom page CSS
       -------------------------------------------------- */
       /* Not required for template or sticky footer method. */
@@ -72,14 +70,27 @@
         border-radius: 3px;
       }
       
-      #sortButtons {
+      #sort-buttons {
         width: 265px;
       }
       
       @media (max-width: 767px) {
-      	#sortButtons {
+      	#sort-buttons {
           width: 100%;
         }
+      }
+      
+      .bookmark-description-container {
+        padding-top: 8px;
+      }
+      
+      .bookmark-description {
+        float: left;
+        width: 100%;
+      }
+      
+      .control-group.error [class^="icon-"], .control-group.error [class*=" icon-"] {
+      	color: #fff;
       }
       
   </style>
