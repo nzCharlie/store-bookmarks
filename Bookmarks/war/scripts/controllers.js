@@ -80,7 +80,11 @@ function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
 function BookmarkAddCtrl($scope, Bookmark, $location, $rootScope) {
 	$scope.$on('submit', function (event, bookmark){
 		console.log("received" + bookmark);
+		
+		$scope.$broadcast('saving');
+		
 		Bookmark.create(bookmark, function() {
+			$scope.$broadcast('saved');
 			$location.path('/bookmarks');
 		});
 	});
@@ -98,12 +102,16 @@ function BookmarkEditCtrl($scope, Bookmark, $routeParams, $location, $rootScope)
 	
 	$scope.$on('submit', function (event, updatedBookmark){
 		console.log("received" + updatedBookmark);
+		
+		$scope.$broadcast('saving');
+		
 		bookmark.name = updatedBookmark.name;
 		bookmark.url = updatedBookmark.url;
 		bookmark.description = updatedBookmark.description;
-		
+	
 		console.log('updating bookmark id: ' + bookmark.id);
 		bookmark.$save({bookmarkId: ''}, function() {
+			$scope.$broadcast('saved');
 			$location.path('/bookmarks');
 		});
 	});
@@ -111,6 +119,8 @@ function BookmarkEditCtrl($scope, Bookmark, $routeParams, $location, $rootScope)
 }
 
 function BookmarkFormCtrl($scope) {
+	$scope.isSaving = false;
+	
 	$scope.submit = function () {
 		var bookmark = {
 			"name": $scope.name,
@@ -122,4 +132,11 @@ function BookmarkFormCtrl($scope) {
 		$scope.$emit('submit', bookmark);
 		console.log("submit" + bookmark);
 	};
+	
+	$scope.$on('saving', function() {
+		$scope.isSaving = true;
+	});
+	$scope.$on('saved', function() {
+		$scope.isSaving = false;
+	});
 }

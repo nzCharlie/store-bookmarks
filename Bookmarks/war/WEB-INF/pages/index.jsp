@@ -60,7 +60,7 @@
       }
       
       #sortButtons {
-        width: 260px;
+        width: 265px;
       }
       
       @media (max-width: 767px) {

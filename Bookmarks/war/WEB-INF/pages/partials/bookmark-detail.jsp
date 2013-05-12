@@ -45,8 +45,12 @@
 
 		<div class="control-group">
 		    <div class="controls">
-				<button type="submit" class="btn btn-primary" ng-disabled="bookmarkForm.$invalid">Save</button>
-				<a class="btn" href="#/bookmarks">Cancel</a>
+				<button type="submit" class="btn btn-primary" ng-disabled="isSaving || bookmarkForm.$invalid">
+					 <i class="icon-refresh icon-spin" ng-show="isSaving"></i>
+					 <i class="icon-save" ng-show="!isSaving"></i>
+					 Save
+				</button>
+				<a class="btn" href="#/bookmarks" ng-disabled="isSaving">Cancel</a>
 			</div>
 		</div>
 	</form>
