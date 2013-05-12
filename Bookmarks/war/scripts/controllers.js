@@ -2,24 +2,32 @@
 
 /* Controllers */
 
-function MenuCtrl($scope) {
+function MenuCtrl($scope, $location) {
 	$scope.isCollapsed = true;
-	$scope.$on('switchNav', function (event, nav) {
-		if (nav == 'home') {
-			$scope.homeNavActive='active';
-			$scope.aboutNavActive='';
-		} 
-		else if (nav == 'about') {
+	
+	var navActive = function (nav) {
+		if (nav == 'about') {
 			$scope.homeNavActive='';
 			$scope.aboutNavActive='active';
+		} 
+		else {
+			$scope.homeNavActive='active';
+			$scope.aboutNavActive='';
 		}
+	}
+	
+	console.log($location.path());
+	navActive($location.path() == '/about' ? 'about' : '');
+	
+	$scope.$on('switchNav', function (event, nav) {
+		navActive(nav);
 	});
 }
 
 function LoadingCtrl($scope) {
 	$scope.isLoading = true;
 	$scope.$on('startLoading', function(event) {
-		console.log('star loading');
+		console.log('start loading');
 		$scope.isLoading = true;
 	});
 	$scope.$on('finishLoading', function(event) {

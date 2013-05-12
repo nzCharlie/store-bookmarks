@@ -59,6 +59,16 @@
         margin: 20px 0;
       }
       
+      #sortButtons {
+        width: 260px;
+      }
+      
+      @media (max-width: 767px) {
+      	#sortButtons {
+          width: 100%;
+        }
+      }
+      
   </style>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>

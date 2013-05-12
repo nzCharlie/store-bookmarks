@@ -1,17 +1,16 @@
 <div class="container">
   <div class="page-header row-fluid">
-    <h1 class="span4">
+    <h1 class="span5">
     		Bookmarks 
     		<a class="btn btn-mini btn-primary" href="#/bookmarks/add" ><i class="icon-bookmark-empty"></i> Add</a>
 	</h1>
-	<div class="span8">
-		<div class="offset8 well well-small">
-			<div class="pull-left">Sort by: </div>
+	<div class="pull-right" id="sortButtons">
+		<div class="well well-small">
 			<div class="btn-toolbar">
 				<div class="text-right">			
 					<div class="btn-group">
-						<button type="button" class="btn btn-mini" ng-model="sortSelection" btn-radio="'name'"><i class="icon-bookmark"></i> Name</button>
-						<button type="button" class="btn btn-mini" ng-model="sortSelection" btn-radio="'updated'"><i class="icon-calendar"></i> Date</button>
+						<button type="button" class="btn btn-mini" ng-model="sortSelection" btn-radio="'name'"><i class="icon-bookmark"></i> Sort by name</button>
+						<button type="button" class="btn btn-mini" ng-model="sortSelection" btn-radio="'updated'"><i class="icon-calendar"></i> Sort by date</button>
 					</div>
 					<div class="btn-group">
 						<button type="button" class="btn btn-mini" ng-model="isAscendingSort" btn-checkbox>
