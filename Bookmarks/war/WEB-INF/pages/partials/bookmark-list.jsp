@@ -47,7 +47,7 @@
 	      					<a class="btn btn-micro btn-primary" href="#/bookmarks/edit/{{bookmark.id}}"><i class="icon-edit"></i> Edit</a>
 							|  <a class="btn btn-micro btn-danger" ng-click="deleteBookmark(bookmark)"><i class="icon-trash"> Delete</i></a>
 						</span>
-	      				
+	      				<span class="clearfix"></span>
 	      			</div>
 	      			
 	      			<div class="bookmark-description-container" collapse="!isShowDetail">

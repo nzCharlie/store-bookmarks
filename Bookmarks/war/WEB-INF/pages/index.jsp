@@ -81,12 +81,7 @@
       }
       
       .bookmark-description-container {
-        padding-top: 8px;
-      }
-      
-      .bookmark-description {
-        float: left;
-        width: 100%;
+        padding-top: 20px;
       }
       
       .control-group.error [class^="icon-"], .control-group.error [class*=" icon-"] {
