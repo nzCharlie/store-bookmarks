@@ -4,7 +4,7 @@
 	</div>
 
 	<form name="bookmarkForm" class="form-horizontal" ng-submit="submit()" ng-controller="BookmarkFormCtrl">
-		<div class="control-group">
+		<div class="control-group" ng-class="{error: bookmarkForm.name.$invalid}">
 			<label class="control-label" for="name">Name:</label>
     		<div class="controls">
 				<div class="input-prepend">
@@ -17,7 +17,7 @@
     		</div>
 		</div>
 		
-		<div class="control-group">
+		<div class="control-group" ng-class="{error: bookmarkForm.url.$invalid}">
 			<label class="control-label" for="url">Location (URL):</label>
     		<div class="controls">
     			<div class="input-prepend">
@@ -37,24 +37,17 @@
     			<div class="input-prepend">
     				<span class="add-on"><i class="icon-edit"></i></span>
 					<textarea name="description" class="input-xxlarge"
-						ng-model="description"
-						placeholder="Leave some note for the bookmark" rows="1"></textarea>
+						placeholder="Note for the bookmark" rows="1"
+						auto-grow='description'></textarea>
 				</div>
     		</div>
 		</div>
 
 		<div class="control-group">
 		    <div class="controls">
-				<button type="submit" class="btn btn-primary">Save</button>
+				<button type="submit" class="btn btn-primary" ng-disabled="bookmarkForm.$invalid">Save</button>
 				<a class="btn" href="#/bookmarks">Cancel</a>
 			</div>
 		</div>
 	</form>
 </div>
-
-<script src="lib/jquery.autosize-min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-    $('textarea').autosize();   
-});
-</script>

@@ -54,9 +54,11 @@
       #main .container {
         padding-top: 60px;
       }
+      
       .container .credit {
         margin: 20px 0;
       }
+      
   </style>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
@@ -64,6 +66,8 @@
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers.js"></script>
   <script src="scripts/services.js"></script>
+  <script src="scripts/directives.js"></script>
+  <script src="lib/jquery.autosize-min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
 </head>
 <body>
@@ -93,7 +97,12 @@
       </div>
 
       <!-- Begin page content -->
-      <div id="main" ng-view></div>
+      <div id="main" ng-controller="LoadingCtrl">
+		<div id="loading" ng-show="isLoading" class="container">
+			<h1 class="text-left"><i class="icon-refresh icon-spin"></i> Loading ... </h1>
+		</div>
+      	<div id="app" ng-hide="isLoading" ng-view></div>
+      </div>
 
       <div id="push"></div>
     </div>

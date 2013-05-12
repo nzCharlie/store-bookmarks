@@ -2,7 +2,7 @@
 
 /* App Module */
 
-angular.module('bookmarks', ['ui.bootstrap', 'bookmarksServices', 'sessionService']).
+angular.module('bookmarks', ['ui.bootstrap', 'bookmarksServices', 'sessionService', 'ui.directives']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/bookmarks', {
