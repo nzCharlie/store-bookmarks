@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="page-header">
-		<h1>Add your bookmark</h1>
+		<h1>{{action}}</h1>
 	</div>
 
 	<form name="bookmarkForm" class="form-horizontal" ng-submit="submit()" ng-controller="BookmarkFormCtrl">

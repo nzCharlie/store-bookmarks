@@ -38,8 +38,8 @@
       			<td><i class="icon-bookmark icon-2x"></i> <a href="{{bookmark.url}}"><strong>{{bookmark.name}}</strong></a></td>
       			<td>
       				<span class="pull-right">
-      					<a class="btn btn-mini btn-primary" href="#/bookmarks/edit/{{bookmark.id}}"><i class="icon-edit"></i> Edit</a>
-						|  <a class="btn btn-mini btn-danger" ng-click="deleteBookmark(bookmark)"><i class="icon-trash"> Delete</i></a>
+      					<a class="btn btn-micro btn-primary" href="#/bookmarks/edit/{{bookmark.id}}"><i class="icon-edit"></i> Edit</a>
+						|  <a class="btn btn-micro btn-danger" ng-click="deleteBookmark(bookmark)"><i class="icon-trash"> Delete</i></a>
 					</span>
 				</td>
 		    </tr>

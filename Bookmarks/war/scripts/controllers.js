@@ -49,7 +49,7 @@ function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
 		Session.isAscendingSort = $scope.isAscendingSort;
 		
 		var sortPrefix = !$scope.isAscendingSort ? '-' : '';
-		$scope.sortDirectionIconClass = !$scope.isAscendingSort ? 'icon-arrow-up' : 'icon-arrow-down';
+		$scope.sortDirectionIconClass = !$scope.isAscendingSort ? 'icon-arrow-down' : 'icon-arrow-up';
 		$scope.sort = sortPrefix + $scope.sortSelection;
 	}
 	$scope.$watch('sortSelection', updateSortOrder);
@@ -78,6 +78,8 @@ function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
 }
 
 function BookmarkAddCtrl($scope, Bookmark, $location, $rootScope) {
+	$scope.action = 'Add';
+	
 	$scope.$on('submit', function (event, bookmark){
 		console.log("received" + bookmark);
 		
@@ -91,6 +93,8 @@ function BookmarkAddCtrl($scope, Bookmark, $location, $rootScope) {
 }
 
 function BookmarkEditCtrl($scope, Bookmark, $routeParams, $location, $rootScope) {
+	$scope.action = 'Edit';
+	
 	$rootScope.$broadcast('startLoading');
 	var bookmark = Bookmark.get({bookmarkId: $routeParams.bookmarkId}, function() {
 		$scope.name = bookmark.name;

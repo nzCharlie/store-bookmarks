@@ -50,13 +50,26 @@
       /* Custom page CSS
       -------------------------------------------------- */
       /* Not required for template or sticky footer method. */
-
       #main .container {
         padding-top: 60px;
       }
       
+      @media (max-width: 979px) {
+        #main .container {
+          padding-top: 0px;
+        }
+      } 
+      
       .container .credit {
         margin: 20px 0;
+      }
+      
+      .btn-micro {
+        padding: 0 3px;
+        font-size: 9.75px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
       }
       
       #sortButtons {
@@ -71,14 +84,14 @@
       
   </style>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers.js"></script>
   <script src="scripts/services.js"></script>
   <script src="scripts/directives.js"></script>
   <script src="lib/jquery.autosize-min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular-resource.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.min.js"></script>
 </head>
 <body>
 
