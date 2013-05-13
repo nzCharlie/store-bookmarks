@@ -63,9 +63,9 @@ public class RestBookmarkConverterTest extends RestBookmarkConverter {
 		// given 
 		Bookmark entity = new Bookmark();
 		entity.setId(1L);
-		RestBookmark wrapped = new RestBookmark(entity);
 		
-		Object converted = this.converter.convert(entity, TypeDescriptor.forObject(entity), TypeDescriptor.forObject(wrapped));
-		assertSame(wrapped, converted);
+		Object converted = this.converter.convert(entity, TypeDescriptor.valueOf(Bookmark.class), TypeDescriptor.valueOf(RestBookmark.class));
+		assertEquals(new RestBookmark(entity), converted);
+		assertSame(entity, ((RestBookmark) converted).getEntity());
 	}
 }

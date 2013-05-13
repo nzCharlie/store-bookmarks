@@ -7,17 +7,18 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.bookmarks.dao.BookmarkDao;
 import com.bookmarks.models.Bookmark;
 import com.bookmarks.services.BookmarkService;
+import com.bookmarks.utils.CurrentTimeProvider;
 
 /**
  * @author charlie
@@ -27,7 +28,8 @@ public class BookmarkServiceImplTest {
 
 	private Bookmark bookmark;
 	private BookmarkService service;
-	private @Mock BookmarkDao daoMock; 
+	private @Mock BookmarkDao daoMock;
+	private @Mock CurrentTimeProvider currentTimeProvider;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -38,8 +40,10 @@ public class BookmarkServiceImplTest {
 		
 		this.service = new BookmarkServiceImpl();
 		((BookmarkServiceImpl) this.service).setDao(daoMock);
+		((BookmarkServiceImpl) this.service).setCurrentTimeProvider(currentTimeProvider);
 		
 		this.bookmark = new Bookmark();
+		when(this.currentTimeProvider.getCurrentTime()).thenReturn(new Date(0));
 	}
 
 	/**
@@ -50,6 +54,7 @@ public class BookmarkServiceImplTest {
 		this.service.saveOrUpdateBookmark(bookmark);
 		
 		verify(this.daoMock).saveOrUpdateBookmark(same(bookmark));
+		assertEquals(currentTimeProvider.getCurrentTime(), bookmark.getUpdated());
 	}
 
 	/**
@@ -57,7 +62,7 @@ public class BookmarkServiceImplTest {
 	 */
 	@Test
 	public final void testGetBookmark() {
-		stub(this.daoMock.getBookmark(this.bookmark.getId())).toReturn(bookmark);
+		when(this.daoMock.getBookmark(this.bookmark.getId())).thenReturn(bookmark);
 		
 		Bookmark returned = this.service.getBookmark(this.bookmark.getId());
 		
@@ -82,7 +87,7 @@ public class BookmarkServiceImplTest {
 	@Test
 	public final void testGetAllBookmarks() {
 		List<Bookmark> bookmarks = Arrays.asList(bookmark);
-		stub(this.daoMock.getAllBookmarks()).toReturn(bookmarks);
+		when(this.daoMock.getAllBookmarks()).thenReturn(bookmarks);
 		
 		List<Bookmark> returned = this.service.getAllBookmarks();
 		

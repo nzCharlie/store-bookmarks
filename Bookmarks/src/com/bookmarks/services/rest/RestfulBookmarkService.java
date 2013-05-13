@@ -4,7 +4,6 @@
 package com.bookmarks.services.rest;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.bookmarks.models.Bookmark;
 import com.bookmarks.models.rest.RestBookmark;
 import com.bookmarks.services.BookmarkService;
+import com.bookmarks.utils.CurrentTimeProvider;
 
 /**
  * @author charlie
@@ -36,6 +36,7 @@ public class RestfulBookmarkService {
 
 	private BookmarkService bookmarkService;
 	private ConversionService conversionService;
+	private CurrentTimeProvider currentTimeProvider;
 
 	/**
 	 * @param bookmarkService the bookmarkService to set
@@ -51,6 +52,14 @@ public class RestfulBookmarkService {
 	@Autowired
 	public void setConversionService(ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	/**
+	 * @param currentTimeProvider the currentTimeProvider to set
+	 */
+	@Autowired
+	public void setCurrentTimeProvider(CurrentTimeProvider currentTimeProvider) {
+		this.currentTimeProvider = currentTimeProvider;
 	}
 
 	@GET
@@ -91,7 +100,7 @@ public class RestfulBookmarkService {
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response saveBookmark(RestBookmark restBookmark) {
 		restBookmark.setId(null); // should not specify id
-		restBookmark.setCreated(new Date()); // should be set to now
+		restBookmark.setCreated(this.currentTimeProvider.getCurrentTime()); // should be set to now
 		
 		return saveOrUpdateBookmarks(restBookmark);
 	}

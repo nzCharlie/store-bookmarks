@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.bookmarks.dao.BookmarkDao;
 import com.bookmarks.models.Bookmark;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.Ref;
@@ -42,19 +44,20 @@ public class BookmarkDaoImplTest {
 		this.bookmarkDao = new BookmarkDaoImpl();
 		((BookmarkDaoImpl) this.bookmarkDao).setObjectifyFactory(objectifyFactoryMock);
 		
-		stub(objectifyFactoryMock.begin()).toReturn(ofyMock);
+		when(objectifyFactoryMock.begin()).thenReturn(ofyMock);
 	}
 
 	/**
 	 * Test method for {@link com.bookmarks.dao.impl.BookmarkDaoImpl#getBookmark(java.lang.Long)}.
 	 */
 	@Test
+	@SuppressWarnings("unchecked")
 	public final void testGetBookmark() {
 		Long idToGet = 1L;
 		Bookmark bookmark = new Bookmark();		
 		Ref<Bookmark> ref = mock(Ref.class);
-		stub(this.ofyMock.load().type(Bookmark.class).id(idToGet)).toReturn(ref);
-		stub(ref.get()).toReturn(bookmark);
+		when(this.ofyMock.load().type(Bookmark.class).id(idToGet)).thenReturn(ref);
+		when(ref.get()).thenReturn(bookmark);
 		
 		Bookmark returned = this.bookmarkDao.getBookmark(idToGet);
 		assertSame(bookmark, returned);
@@ -63,13 +66,13 @@ public class BookmarkDaoImplTest {
 	/**
 	 * Test method for {@link com.bookmarks.dao.impl.BookmarkDaoImpl#saveOrUpdateBookmark(com.bookmarks.models.Bookmark)}.
 	 */
-	@SuppressWarnings("rawtypes")
 	@Test
+	@SuppressWarnings("unchecked")
 	public final void testSaveOrUpdateBookmark() {
 		Bookmark bookmark = new Bookmark();
-		Result result = mock(Result.class); 
+		Result<Map<Key<Bookmark>, Bookmark>> result = mock(Result.class); 
 		
-		stub(this.ofyMock.save().entities(same(bookmark))).toReturn(result);
+		when(this.ofyMock.save().entities(same(bookmark))).thenReturn(result);
 		this.bookmarkDao.saveOrUpdateBookmark(bookmark);
 		
 		verify(result).now();
@@ -79,11 +82,12 @@ public class BookmarkDaoImplTest {
 	 * Test method for {@link com.bookmarks.dao.impl.BookmarkDaoImpl#delete1Bookmark(java.lang.Long)}.
 	 */
 	@Test
+	@SuppressWarnings("unchecked")
 	public final void testDelete1Bookmark() {
 		Long idToDelete = 1L;
 		Result<Void> result = mock(Result.class); 
 		
-		stub(this.ofyMock.delete().type(Bookmark.class).id(1L)).toReturn(result);
+		when(this.ofyMock.delete().type(Bookmark.class).id(1L)).thenReturn(result);
 		this.bookmarkDao.delete1Bookmark(idToDelete);
 		
 		verify(result).now();
@@ -95,8 +99,7 @@ public class BookmarkDaoImplTest {
 	@Test
 	public final void testGetAllBookmarks() {
 		List<Bookmark> bookmarks = new ArrayList<Bookmark>();		
-		Ref<Bookmark> ref = mock(Ref.class);
-		stub(this.ofyMock.load().type(Bookmark.class).list()).toReturn(bookmarks);
+		when(this.ofyMock.load().type(Bookmark.class).list()).thenReturn(bookmarks);
 		
 		List<Bookmark> returned = this.bookmarkDao.getAllBookmarks();
 		assertSame(bookmarks, returned);

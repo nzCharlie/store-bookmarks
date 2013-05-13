@@ -3,8 +3,6 @@
  */
 package com.bookmarks.services.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.bookmarks.dao.BookmarkDao;
 import com.bookmarks.models.Bookmark;
 import com.bookmarks.services.BookmarkService;
+import com.bookmarks.utils.CurrentTimeProvider;
 
 /**
  * @author charlie
@@ -22,6 +21,7 @@ import com.bookmarks.services.BookmarkService;
 public class BookmarkServiceImpl implements BookmarkService {
 
 	private BookmarkDao dao;
+	private CurrentTimeProvider currentTimeProvider;
 	
 	/**
 	 * @param dao the dao to set
@@ -31,12 +31,20 @@ public class BookmarkServiceImpl implements BookmarkService {
 		this.dao = dao;
 	}
 
+	/**
+	 * @param currentTimeProvider the currentTimeProvider to set
+	 */
+	@Autowired
+	public void setCurrentTimeProvider(CurrentTimeProvider currentTimeProvider) {
+		this.currentTimeProvider = currentTimeProvider;
+	}
+
 	/* (non-Javadoc)
 	 * @see com.bookmarks.services.BookmarkService#saveOrUpdateBookmark(com.bookmarks.models.Bookmark)
 	 */
 	@Override
 	public void saveOrUpdateBookmark(Bookmark bookmark) {
-		bookmark.setUpdated(new Date());
+		bookmark.setUpdated(this.currentTimeProvider.getCurrentTime());
 		this.dao.saveOrUpdateBookmark(bookmark);
 	}
 
