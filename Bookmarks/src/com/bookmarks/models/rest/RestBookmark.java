@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import com.bookmarks.models.Bookmark;
 
 /**
@@ -118,5 +120,22 @@ public class RestBookmark {
 	@XmlTransient
 	public Bookmark getEntity() {
 		return this.entity;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		
+		if (obj instanceof RestBookmark) {
+			RestBookmark other = (RestBookmark) obj;
+			return ObjectUtils.equals(this.getEntity(), other.getEntity());
+		}
+		
+		return super.equals(obj);
 	}
 }

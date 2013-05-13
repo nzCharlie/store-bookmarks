@@ -6,6 +6,8 @@ package com.bookmarks.models;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
@@ -102,4 +104,19 @@ public class Bookmark {
 		this.updated = updated;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		
+		if (obj instanceof Bookmark) {
+			Bookmark other = (Bookmark) obj;
+			return ObjectUtils.equals(this.getId(), other.getId());
+		}
+		return false;
+	}
 }
