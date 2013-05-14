@@ -2,7 +2,9 @@
 
 /* Controllers */
 
-function MenuCtrl($scope, $location) {
+angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
+
+  .controller('MenuCtrl', ['$scope', '$location', function ($scope, $location) {
 	$scope.isCollapsed = true;
 	
 	var navActive = function (nav) {
@@ -22,9 +24,9 @@ function MenuCtrl($scope, $location) {
 	$scope.$on('switchNav', function (event, nav) {
 		navActive(nav);
 	});
-}
+}])
 
-function LoadingCtrl($scope) {
+.controller('LoadingCtrl', ['$scope', function($scope){
 	$scope.isLoading = true;
 	$scope.$on('startLoading', function(event) {
 		console.log('start loading');
@@ -34,13 +36,13 @@ function LoadingCtrl($scope) {
 		console.log('finish loading');
 		$scope.isLoading = false;
 	});
-}
+}])
 
-function AboutCtrl($scope, $rootScope) {
+.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
 	$rootScope.$broadcast('switchNav', 'about');
-}
+}])
 
-function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
+.controller('BookmarksListCtrl', ['$scope', 'Bookmark', '$rootScope', 'Session', function($scope, Bookmark, $rootScope, Session){
 	$scope.isAscendingSort = angular.isUndefined(Session.isAscendingSort) ? true : Session.isAscendingSort;
 	$scope.sortSelection = angular.isUndefined(Session.sortSelection) ? 'name' : Session.sortSelection;
 
@@ -77,10 +79,10 @@ function BookmarksListCtrl($scope, Bookmark, $rootScope, Session) {
 		return $.trim(bookmark.description).length > 0;
 	}
 	
-	console.log("list controller finished.")
-}
+	console.log("list controller finished.");
+}])
 
-function BookmarkAddCtrl($scope, Bookmark, $location, $rootScope) {
+.controller('BookmarkAddCtrl', ['$scope', 'Bookmark', '$location', '$rootScope', function($scope, Bookmark, $location, $rootScope){
 	$scope.action = 'Add';
 	
 	$scope.$on('submit', function (event, bookmark){
@@ -93,9 +95,9 @@ function BookmarkAddCtrl($scope, Bookmark, $location, $rootScope) {
 			$location.path('/bookmarks');
 		});
 	});
-}
+}])
 
-function BookmarkEditCtrl($scope, Bookmark, $routeParams, $location, $rootScope) {
+.controller('BookmarkEditCtrl', ['$scope', 'Bookmark', '$routeParams', '$location', '$rootScope', function($scope, Bookmark, $routeParams, $location, $rootScope) {
 	$scope.action = 'Edit';
 	
 	$rootScope.$broadcast('startLoading');
@@ -122,10 +124,9 @@ function BookmarkEditCtrl($scope, Bookmark, $routeParams, $location, $rootScope)
 			$location.path('/bookmarks');
 		});
 	});
-	
-}
+}])
 
-function BookmarkFormCtrl($scope) {
+.controller('BookmarkFormCtrl', ['$scope', function($scope) {
 	$scope.isSaving = false;
 	
 	$scope.submit = function () {
@@ -146,4 +147,4 @@ function BookmarkFormCtrl($scope) {
 	$scope.$on('saved', function() {
 		$scope.isSaving = false;
 	});
-}
+}]);
