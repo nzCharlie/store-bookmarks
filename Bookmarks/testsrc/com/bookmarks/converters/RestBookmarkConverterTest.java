@@ -10,6 +10,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.core.convert.converter.GenericConverter.ConvertiblePair;
 
 import com.bookmarks.models.Bookmark;
 import com.bookmarks.models.rest.RestBookmark;
@@ -18,7 +19,7 @@ import com.bookmarks.models.rest.RestBookmark;
  * @author charlie
  *
  */
-public class RestBookmarkConverterTest extends RestBookmarkConverter {
+public class RestBookmarkConverterTest {
 
 	private RestBookmarkConverter converter;
 	
