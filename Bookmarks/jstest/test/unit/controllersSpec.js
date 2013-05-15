@@ -261,4 +261,198 @@ describe('controllers', function(){
 	 });
 	 	 
   });
+  
+  describe('BookmarkAddCtrl', function () {
+	 var scope, rootScopeMock, location, BookmarkMock;
+		 
+	 beforeEach(inject(function($rootScope, $controller) {
+		 scope = $rootScope.$new();
+		 rootScopeMock = jasmine.createSpyObj('rootScopeMock',['$broadcast']); 
+		 location = jasmine.createSpyObj('location', ['path'])
+		 BookmarkMock = jasmine.createSpyObj('Bookmark', ['create']);
+		 
+		 $controller('BookmarkAddCtrl', {$scope: scope, $rootScope: rootScopeMock, $location: location, Bookmark: BookmarkMock});
+	 }));
+	 
+	 it('should have action as add', function() {
+		 expect(scope.action).toBe('Add');
+	 });
+	 
+	 it ('should call Bookmark.create on submit', function() {
+		 var childScope = scope.$new();
+		 var savingRaised = false;
+		 var savedRaised = false;
+		 childScope.$on('saving', function(){
+			 savingRaised = true;
+		 });
+		 childScope.$on('saved', function(){
+			 savedRaised = true;
+		 });
+		 scope.$parent.$broadcast('submit', 'bookmark');
+		 
+		 expect(BookmarkMock.create).toHaveBeenCalledWith('bookmark', jasmine.any(Function));
+		 expect(savingRaised).toBe(true);
+		 
+		 var savedFunc = BookmarkMock.create.argsForCall[0][1];
+		 savedFunc();
+		 expect(savedRaised).toBe(true);
+		 expect(location.path).toHaveBeenCalledWith('/bookmarks');
+	 });
+	 
+  });
+  
+  describe('BookmarkEditCtrl', function () {
+	 var scope, rootScopeMock, location, BookmarkMock, aBookmark, loadId;
+		 
+	 beforeEach(inject(function($rootScope, $controller) {
+		 scope = $rootScope.$new();
+		 rootScopeMock = jasmine.createSpyObj('rootScopeMock',['$broadcast']); 
+		 location = jasmine.createSpyObj('location', ['path'])
+		 BookmarkMock = jasmine.createSpyObj('BookmarkMock', ['get']);
+		 loadId = 1;
+		 aBookmark = {
+				 id: loadId,
+				 name: 'aName',
+				 url: 'aUrl',
+				 description: 'aDescription',
+				 $save : jasmine.createSpy('$save')
+		 };
+		 BookmarkMock.get.andCallFake(function() {
+			return aBookmark; 
+		 });
+		 
+		 $controller('BookmarkEditCtrl', {$scope: scope, $rootScope: rootScopeMock, $location: location, Bookmark: BookmarkMock, $routeParams : {bookmarkId: loadId}});
+	 }));
+	 
+	 it('should have action as edit', function() {
+		 expect(scope.action).toBe('Edit');
+	 });
+	 
+	 it('should have properties as loaded', function () {
+		 expect(rootScopeMock.$broadcast).toHaveBeenCalledWith('startLoading');
+		 expect(BookmarkMock.get).toHaveBeenCalledWith({bookmarkId: loadId}, jasmine.any(Function));
+		 
+		 var loadingFunc = BookmarkMock.get.argsForCall[0][1];
+		 loadingFunc();
+		 expect(scope.name).toBe(aBookmark.name);
+		 expect(scope.url).toBe(aBookmark.url);
+		 expect(scope.description).toBe(aBookmark.description);
+		 expect(rootScopeMock.$broadcast).toHaveBeenCalledWith('finishLoading');
+	 });
+	 
+	 it ('should call bookmark.$save on submit', function() {
+		 var childScope = scope.$new();
+		 var savingRaised = false;
+		 var savedRaised = false;
+		 childScope.$on('saving', function(){
+			 savingRaised = true;
+		 });
+		 childScope.$on('saved', function(){
+			 savedRaised = true;
+		 });
+		 var updated = {name: 'diffName', url: 'diffUrl', description: 'diffDescription'}
+		 scope.$parent.$broadcast('submit', updated);
+		 expect(aBookmark.name).toBe(updated.name);
+		 expect(aBookmark.url).toBe(updated.url);
+		 expect(aBookmark.description).toBe(updated.description);
+		 
+		 expect(aBookmark.$save).toHaveBeenCalledWith({bookmarkId: ''}, jasmine.any(Function));
+		 expect(savingRaised).toBe(true);
+		 
+		 var savedFunc = aBookmark.$save.argsForCall[0][1];
+		 savedFunc();
+		 expect(savedRaised).toBe(true);
+		 expect(location.path).toHaveBeenCalledWith('/bookmarks');
+	 });
+	 
+  });
+  
+  describe('BookmarkFormCtrl', function () {
+	 var scope;
+		 
+	 beforeEach(inject(function($rootScope, $controller) {
+		 scope = $rootScope.$new();
+		 
+		 $controller('BookmarkFormCtrl', {$scope: scope});
+	 }));
+	 
+	 it('should default to not in saving mode', function() {
+		expect(scope.isSaving).toBe(false);
+	 });
+	 
+	 it('should be in saving mode when receiving saving event', function() {
+		scope.$parent.$broadcast('saving');
+		expect(scope.isSaving).toBe(true); 
+	 });
+	 
+	 it('should be in saving mode when receiving saving event', function() {
+		scope.isSaving = true; 
+		
+		scope.$parent.$broadcast('saved');
+		expect(scope.isSaving).toBe(false); 
+	 });
+	 
+	 it('should raise submit event when submitting', function() {
+		var expectedBookmark = {
+				 name: 'aName',
+				 url: 'aUrl',
+				 description: 'aDescription'
+		};
+		var actualBookmark;
+		var submitRaised = false;
+		scope.$parent.$on('submit', function(event, _actualBookmark) {
+			submitRaised = true;
+			actualBookmark = _actualBookmark;
+		});
+		scope.name = expectedBookmark.name;
+		scope.url = expectedBookmark.url;
+		scope.description = expectedBookmark.description;
+		
+		scope.submit();
+		expect(submitRaised).toBe(true);
+		expect(actualBookmark.name).toEqual(expectedBookmark.name);
+		expect(actualBookmark.url).toEqual(expectedBookmark.url);
+		expect(actualBookmark.description).toEqual(expectedBookmark.description);
+	 });
+
+	 it ('should haved trimed name when submitting', function () {
+		var actualBookmark;
+		scope.$parent.$on('submit', function(event, _actualBookmark) {
+			actualBookmark = _actualBookmark;
+		});
+		 
+		scope.name = '   name';
+		scope.submit();
+		expect(actualBookmark.name).toEqual('name');
+		
+		scope.name = 'name   ';
+		scope.submit();
+		expect(actualBookmark.name).toEqual('name');
+		
+		scope.name = '   ';
+		scope.submit();
+		expect(actualBookmark.name).toEqual('');
+	 });
+
+	 it ('should haved trimed description when submitting', function () {
+		var actualBookmark;
+		scope.$parent.$on('submit', function(event, _actualBookmark) {
+			actualBookmark = _actualBookmark;
+		});
+		 
+		scope.description = '   description';
+		scope.submit();
+		expect(actualBookmark.description).toEqual('description');
+		
+		scope.description = 'description   ';
+		scope.submit();
+		expect(actualBookmark.description).toEqual('description');
+		
+		scope.description = '   ';
+		scope.submit();
+		expect(actualBookmark.description).toEqual('');
+	 });
+	 
+  });
+  
 });
