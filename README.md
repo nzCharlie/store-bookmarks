@@ -16,6 +16,9 @@ Tasks
     - Delete a bookmark
     - Show description
 - Todos
+    - tags
+    - user support
+    - security
     - local storage
     - prettier interface
     - more tests
