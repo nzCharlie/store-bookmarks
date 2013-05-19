@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookmarks.dao.BookmarkDao;
 import com.bookmarks.models.Bookmark;
@@ -43,6 +44,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 	 * @see com.bookmarks.services.BookmarkService#saveOrUpdateBookmark(com.bookmarks.models.Bookmark)
 	 */
 	@Override
+	@Transactional
 	public void saveOrUpdateBookmark(Bookmark bookmark) {
 		bookmark.setUpdated(this.currentTimeProvider.getCurrentTime());
 		this.dao.saveOrUpdateBookmark(bookmark);
@@ -52,6 +54,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 	 * @see com.bookmarks.services.BookmarkService#getBookmark(java.lang.Long)
 	 */
 	@Override
+	@Transactional
 	public Bookmark getBookmark(Long id) {
 		return this.dao.getBookmark(id);
 	}
@@ -60,6 +63,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 	 * @see com.bookmarks.services.BookmarkService#deleteBookmark(java.lang.Long)
 	 */
 	@Override
+	@Transactional
 	public void deleteBookmark(Long id) {
 		this.dao.delete1Bookmark(id);
 	}
@@ -68,6 +72,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 	 * @see com.bookmarks.services.BookmarkService#getAllBookmarks()
 	 */
 	@Override
+	@Transactional
 	public List<Bookmark> getAllBookmarks() {
 		return this.dao.getAllBookmarks();
 	}

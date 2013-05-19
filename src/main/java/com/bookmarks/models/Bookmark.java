@@ -6,12 +6,22 @@ package com.bookmarks.models;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
  * @author charlie
  *
  */
+@Entity
+@Table(name="bookmark")
 public class Bookmark {
 
 	private Long id;
@@ -29,12 +39,17 @@ public class Bookmark {
 	/**
 	 * @return the id
 	 */
+	@Id
+	@SequenceGenerator(name="bookmark_pk_sequence", sequenceName="bookmark_pk_sequence")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="bookmark_pk_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	public Long getId() {
 		return id;
 	}
 	/**
 	 * @return the name
 	 */
+	@Column(name= "name", nullable=false, length=255)
 	public String getName() {
 		return name;
 	}
@@ -53,6 +68,7 @@ public class Bookmark {
 	/**
 	 * @return the created
 	 */
+	@Column(name= "created", nullable=false)
 	public Date getCreated() {
 		return created;
 	}
@@ -65,6 +81,7 @@ public class Bookmark {
 	/**
 	 * @return the url
 	 */
+	@Column(name= "url", nullable=false, length=255)
 	public String getUrl() {
 		return url;
 	}
@@ -77,6 +94,7 @@ public class Bookmark {
 	/**
 	 * @return the description
 	 */
+	@Column(name= "description", nullable=true, length=255)
 	public String getDescription() {
 		return description;
 	}
@@ -89,6 +107,7 @@ public class Bookmark {
 	/**
 	 * @return the update
 	 */
+	@Column(name= "updated", nullable=false)
 	public Date getUpdated() {
 		return updated;
 	}
