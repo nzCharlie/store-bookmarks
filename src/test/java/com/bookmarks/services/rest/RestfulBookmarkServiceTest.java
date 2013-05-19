@@ -24,6 +24,7 @@ import org.springframework.core.convert.ConversionService;
 import com.bookmarks.models.Bookmark;
 import com.bookmarks.models.rest.RestBookmark;
 import com.bookmarks.services.BookmarkService;
+import com.bookmarks.services.rest.impl.RestfulBookmarkServiceImpl;
 import com.bookmarks.utils.CurrentTimeProvider;
 
 /**
@@ -32,7 +33,7 @@ import com.bookmarks.utils.CurrentTimeProvider;
  */
 public class RestfulBookmarkServiceTest {
 
-	private RestfulBookmarkService service;
+	private RestfulBookmarkServiceImpl service;
 	
 	private @Mock BookmarkService bookmarkService;
 	private @Mock ConversionService conversionService;
@@ -45,7 +46,7 @@ public class RestfulBookmarkServiceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		
-		this.service = new RestfulBookmarkService();
+		this.service = new RestfulBookmarkServiceImpl();
 		this.service.setBookmarkService(bookmarkService);
 		this.service.setConversionService(conversionService);
 		this.service.setCurrentTimeProvider(currentTimeProvider);
@@ -54,7 +55,7 @@ public class RestfulBookmarkServiceTest {
 	}
 
 	/**
-	 * Test method for {@link com.bookmarks.services.rest.RestfulBookmarkService#getAllBookmarks()}.
+	 * Test method for {@link com.bookmarks.services.rest.impl.RestfulBookmarkServiceImpl#getAllBookmarks()}.
 	 */
 	@Test
 	public final void testGetAllBookmarks() {
@@ -74,7 +75,7 @@ public class RestfulBookmarkServiceTest {
 	}
 
 	/**
-	 * Test method for {@link com.bookmarks.services.rest.RestfulBookmarkService#getBookmark(java.lang.Long)}.
+	 * Test method for {@link com.bookmarks.services.rest.impl.RestfulBookmarkServiceImpl#getBookmark(java.lang.Long)}.
 	 */
 	@Test
 	public final void testGetBookmark() {
@@ -91,7 +92,7 @@ public class RestfulBookmarkServiceTest {
 	}
 
 	/**
-	 * Test method for {@link com.bookmarks.services.rest.RestfulBookmarkService#updateBookmark(com.bookmarks.models.rest.RestBookmark)}.
+	 * Test method for {@link com.bookmarks.services.rest.impl.RestfulBookmarkServiceImpl#updateBookmark(com.bookmarks.models.rest.RestBookmark)}.
 	 */
 	@Test
 	public final void testUpdateBookmark() {
@@ -107,7 +108,7 @@ public class RestfulBookmarkServiceTest {
 	}
 
 	/**
-	 * Test method for {@link com.bookmarks.services.rest.RestfulBookmarkService#saveBookmark(com.bookmarks.models.rest.RestBookmark)}.
+	 * Test method for {@link com.bookmarks.services.rest.impl.RestfulBookmarkServiceImpl#saveBookmark(com.bookmarks.models.rest.RestBookmark)}.
 	 */
 	@Test
 	public final void testSaveBookmark() {
@@ -140,7 +141,7 @@ public class RestfulBookmarkServiceTest {
 	}
 
 	/**
-	 * Test method for {@link com.bookmarks.services.rest.RestfulBookmarkService#deleteBookmark(java.lang.Long)}.
+	 * Test method for {@link com.bookmarks.services.rest.impl.RestfulBookmarkServiceImpl#deleteBookmark(java.lang.Long)}.
 	 */
 	@Test
 	public final void testDeleteBookmark() {

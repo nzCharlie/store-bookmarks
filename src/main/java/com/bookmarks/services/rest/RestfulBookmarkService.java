@@ -3,9 +3,9 @@
  */
 package com.bookmarks.services.rest;
 
-import java.util.Arrays;
 import java.util.List;
 
+import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,58 +17,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.stereotype.Service;
-
-import com.bookmarks.models.Bookmark;
 import com.bookmarks.models.rest.RestBookmark;
-import com.bookmarks.services.BookmarkService;
-import com.bookmarks.utils.CurrentTimeProvider;
 
 /**
  * @author charlie
  *
  */
-@Service
-@Path("/bookmarks")
-public class RestfulBookmarkService {
-
-	private BookmarkService bookmarkService;
-	private ConversionService conversionService;
-	private CurrentTimeProvider currentTimeProvider;
-
-	/**
-	 * @param bookmarkService the bookmarkService to set
-	 */
-	@Autowired
-	public void setBookmarkService(BookmarkService bookmarkService) {
-		this.bookmarkService = bookmarkService;
-	}
-		
-	/**
-	 * @param conversionService the conversionService to set
-	 */
-	@Autowired
-	public void setConversionService(ConversionService conversionService) {
-		this.conversionService = conversionService;
-	}
-
-	/**
-	 * @param currentTimeProvider the currentTimeProvider to set
-	 */
-	@Autowired
-	public void setCurrentTimeProvider(CurrentTimeProvider currentTimeProvider) {
-		this.currentTimeProvider = currentTimeProvider;
-	}
-
+@WebService
+public interface RestfulBookmarkService {
+	
 	@GET
 	@Path("list")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public List<RestBookmark> getAllBookmarks() {
-		List<Bookmark> allBookmarks = this.bookmarkService.getAllBookmarks();
-		return Arrays.asList(this.conversionService.convert(allBookmarks, RestBookmark[].class));
-	}
+	public List<RestBookmark> getAllBookmarks();
 	
 	/**
 	 * @param id
@@ -77,10 +38,7 @@ public class RestfulBookmarkService {
 	@GET
 	@Path("{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public RestBookmark getBookmark(@PathParam("id") Long id) {
-		Bookmark bookmark = this.bookmarkService.getBookmark(id);
-		return this.conversionService.convert(bookmark, RestBookmark.class);
-	}
+	public RestBookmark getBookmark(@PathParam("id") Long id);
 
 	/**
 	 * @param restBookmark
@@ -88,9 +46,7 @@ public class RestfulBookmarkService {
 	 */
 	@POST
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response updateBookmark(RestBookmark restBookmark) {
-		return saveOrUpdateBookmarks(restBookmark);
-	}
+	public Response updateBookmark(RestBookmark restBookmark);
 	
 	/**
 	 * @param restBookmark
@@ -98,31 +54,12 @@ public class RestfulBookmarkService {
 	 */
 	@PUT
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response saveBookmark(RestBookmark restBookmark) {
-		restBookmark.setId(null); // should not specify id
-		restBookmark.setCreated(this.currentTimeProvider.getCurrentTime()); // should be set to now
-		
-		return saveOrUpdateBookmarks(restBookmark);
-	}
+	public Response saveBookmark(RestBookmark restBookmark);
 
-	/**
-	 * 
-	 * @param restBookmark
-	 * @return
-	 */
-	private Response saveOrUpdateBookmarks(RestBookmark restBookmark) {
-		Bookmark bookmark = this.conversionService.convert(restBookmark, Bookmark.class);
-		this.bookmarkService.saveOrUpdateBookmark(bookmark);
-		return Response.ok().entity(restBookmark).build();
-	}
-	
 	/**
 	 * @param id
 	 */
 	@DELETE
 	@Path("{id}")
-	public void deleteBookmark(@PathParam("id") Long id) {
-		this.bookmarkService.deleteBookmark(id);
-	}
-	
+	public void deleteBookmark(@PathParam("id") Long id);
 }
