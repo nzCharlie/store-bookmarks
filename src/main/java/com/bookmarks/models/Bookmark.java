@@ -15,12 +15,14 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.hibernate.annotations.Proxy;
 
 /**
  * @author charlie
  *
  */
 @Entity
+@Proxy(lazy=false)
 @Table(name="bookmark")
 public class Bookmark {
 
