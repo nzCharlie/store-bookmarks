@@ -1,0 +1,57 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- Activates scanning of @Autowired -->
+    <context:annotation-config/>
+
+    <mvc:resources mapping="/scripts/**" location="/scripts/"/>
+    <mvc:resources mapping="/lib/**" location="/lib/"/>
+
+	<context:component-scan base-package="com.bookmarks" />
+	<mvc:annotation-driven conversion-service="conversionService"/>
+ 
+	<bean
+	   class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/pages/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+            	<ref bean="restBookmarkConverter" />
+            </set>
+        </property>
+        <property name="formatters">
+            <set>
+<!--                 <bean class="org.example.MyFormatter"/> -->
+<!--                 <bean class="org.example.MyAnnotationFormatterFactory"/> -->
+            </set>
+        </property>
+        <property name="formatterRegistrars">
+            <set>
+<!--                 <bean class="org.example.MyFormatterRegistrar"/> -->
+            </set>
+        </property>
+    </bean>
+    
+    <mvc:view-controller path="partials/bookmark-list" view-name="partials/bookmark-list" />
+    <mvc:view-controller path="partials/bookmark-detail" view-name="partials/bookmark-detail" />
+    <mvc:view-controller path="partials/about" view-name="partials/about" />
+ 
+</beans>
