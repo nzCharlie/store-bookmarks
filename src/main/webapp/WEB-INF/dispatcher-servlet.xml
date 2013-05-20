@@ -63,6 +63,7 @@
    	
     <mvc:resources mapping="/scripts/**" location="/scripts/"/>
     <mvc:resources mapping="/lib/**" location="/lib/"/>
+    <mvc:resources mapping="/favicon.ico" location="/"/>
 
 	<context:component-scan base-package="com.bookmarks" />
 	<mvc:annotation-driven conversion-service="conversionService"/>
