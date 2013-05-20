@@ -1,5 +1,10 @@
 frameworks = ["jasmine"];
 
+plugins = [
+   'karma-jasmine',
+   'karma-phantomjs-launcher'
+ ];
+
 basePath = '../';
 
 files = [
@@ -13,7 +18,7 @@ files = [
 
 autoWatch = true;
 
-browsers = ['Firefox'];
+browsers = ['PhantomJS'];
 
 junitReporter = {
   outputFile: 'test_out/unit.xml',

@@ -51,6 +51,22 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+			    <groupId>com.kelveden</groupId>
+			    <artifactId>maven-karma-plugin</artifactId>
+			    <version>1.1</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>start</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+			    	<configFile>jstest/config/karma.conf.js</configFile>
+			        <singleRun>true</singleRun>
+			    </configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
