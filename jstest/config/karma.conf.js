@@ -2,6 +2,7 @@ frameworks = ["jasmine"];
 
 plugins = [
    'karma-jasmine',
+   'karma-coverage',
    'karma-phantomjs-launcher'
  ];
 
@@ -16,11 +17,12 @@ files = [
   'test/unit/**/*.js'
 ];
 
+preprocessors = {
+  '../src/main/webapp/scripts/*.js': 'coverage'
+};
+
 autoWatch = true;
 
 browsers = ['PhantomJS'];
 
-junitReporter = {
-  outputFile: 'test_out/unit.xml',
-  suite: 'unit'
-};
+reporters = ['coverage'];
