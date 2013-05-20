@@ -65,6 +65,7 @@
 			    <configuration>
 			    	<configFile>jstest/config/karma.conf.js</configFile>
 			        <singleRun>true</singleRun>
+			        <skipKarma>${maven.test.skip}</skipKarma>
 			    </configuration>
 			</plugin>
             <plugin>
