@@ -65,7 +65,7 @@
 			    <configuration>
 			    	<configFile>jstest/config/karma.conf.js</configFile>
 			        <singleRun>true</singleRun>
-			        <skipKarma>${maven.test.skip}</skipKarma>
+			        <skipKarma>${skipTests}</skipKarma>
 			    </configuration>
 			</plugin>
             <plugin>
@@ -410,6 +410,7 @@
 	</dependencies>
 
 	<properties>
+		<skipTests>${maven.test.skip}</skipTests>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.host>0.0.0.0</jetty.host>
 		<jetty.port>8080</jetty.port>
