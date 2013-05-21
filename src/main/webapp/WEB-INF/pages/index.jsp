@@ -113,24 +113,10 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner" ng-controller="MenuCtrl">
-          <div class="container">
-            <button type="button" class="btn btn-navbar" ng-model="isCollapsed" btn-checkbox>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="brand" href="#">Bookmarks</a>
-            <div class="nav-collapse collapse" collapse="isCollapsed">
-              <ul class="nav">
-                <li ng-class="homeNavActive" id="homeNav"><a href="#/bookmarks"><i class="icon-home"></i> Home</a></li>
-                <li ng-class="aboutNavActive" id="aboutNav"><a href="#/about"><i class="icon-user"></i> About</a></li>
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div>
-        </div>
-      </div>
+      <menu brand="Bookmarks" ng-transclude>
+        <nav href="/bookmarks" icon-class="icon-home" title="Home"></nav>
+        <nav href="/about" icon-class="icon-user" title="About"></nav>
+      </menu>
 
       <!-- Begin page content -->
       <div id="main" ng-controller="LoadingCtrl">

@@ -4,28 +4,6 @@
 
 angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 
-  .controller('MenuCtrl', ['$scope', '$location', function ($scope, $location) {
-	$scope.isCollapsed = true;
-	
-	var navActive = function (nav) {
-		if (nav == 'about') {
-			$scope.homeNavActive='';
-			$scope.aboutNavActive='active';
-		} 
-		else {
-			$scope.homeNavActive='active';
-			$scope.aboutNavActive='';
-		}
-	}
-	
-	console.log($location.path());
-	navActive($location.path() == '/about' ? 'about' : '');
-	
-	$scope.$on('switchNav', function (event, nav) {
-		navActive(nav);
-	});
-}])
-
 .controller('LoadingCtrl', ['$scope', function($scope){
 	$scope.isLoading = true;
 	$scope.$on('startLoading', function(event) {
@@ -36,10 +14,6 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 		console.log('finish loading');
 		$scope.isLoading = false;
 	});
-}])
-
-.controller('AboutCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
-	$rootScope.$broadcast('switchNav', 'about');
 }])
 
 .controller('BookmarksListCtrl', ['$scope', 'Bookmark', '$rootScope', 'Session', function($scope, Bookmark, $rootScope, Session){
