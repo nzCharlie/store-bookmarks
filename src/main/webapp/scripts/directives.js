@@ -9,25 +9,26 @@ var autoGrowLink = function($scope, $element, $attrs) {
   $scope.$watch($attrs.ngModel, update);
 } 
 
-var menuCtrl = function($scope, $element) {
+var menuCtrl = function($scope) {
   $scope.navs = [];
   $scope.isCollapsed = false;
 
   $scope.select = function(nav) {
-	angular.forEach($scope.navs, function(nav) {
-	  nav.selected = false;
-	});
-	nav.selected = true;
+    angular.forEach($scope.navs, function(nav) {
+      nav.selected = false;
+    });
+    nav.selected = true;
   };
 
   this.addNav = function(nav) {
-	if ($scope.navs.length == 0) $scope.select(nav); // select the first one by default
-	$scope.navs.push(nav);
+    if ($scope.navs.length == 0) 
+      $scope.select(nav); // select the first one by default
+    $scope.navs.push(nav);
   }
 }
 
-var navLink = function(scope, element, attrs, menuCtrl) {
-  menuCtrl.addNav(scope);
+var navLink = function($scope, $element, $attrs, menuCtrl) {
+  menuCtrl.addNav($scope);
 }
 
 angular.module('ui.directives', ['ui.bootstrap'])
@@ -35,7 +36,7 @@ angular.module('ui.directives', ['ui.bootstrap'])
 .directive('autoGrow', function() {
   return {
     restrict: 'A',
-	require: 'ngModel',
+    require: 'ngModel',
     link: autoGrowLink
   };
 })
@@ -43,9 +44,9 @@ angular.module('ui.directives', ['ui.bootstrap'])
 .directive('menu', function() {
   return {
     restrict: 'E',
-	transclude: true, // need to ensure child element survives 
-	scope: {brand: '@'},
-	controller: menuCtrl,
+    transclude: true, // need to ensure child element survives 
+    scope: {brand: '@'},
+    controller: menuCtrl,
     template:
       '<div class="navbar navbar-fixed-top">'+
         '<div class="navbar-inner">'+
@@ -58,9 +59,9 @@ angular.module('ui.directives', ['ui.bootstrap'])
             '<a class="brand" href="#">{{brand}}</a>'+
             '<div class="nav-collapse collapse" collapse="isCollapsed">'+
               '<ul class="nav">'+
-			    '<li ng-repeat="nav in navs" ng-class="{active: nav.selected}">' +
-				  '<a ng-href="#{{nav.href}}" ng-click="select(nav)"><i class="{{nav.iconClass}}"></i> {{nav.title}}</a>' +
-				'</li>' +
+                '<li ng-repeat="nav in navs" ng-class="{active: nav.selected}">' +
+                  '<a ng-href="#{{nav.href}}" ng-click="select(nav)"><i class="{{nav.iconClass}}"></i> {{nav.title}}</a>' +
+                '</li>' +
               '</ul>'+
             '</div>'+
           '</div>'+
@@ -72,14 +73,14 @@ angular.module('ui.directives', ['ui.bootstrap'])
 
 .directive('nav', function() {
   return {
-	require: '^menu',
-	restrict: 'E',
-	scope: { 
+    require: '^menu',
+    restrict: 'E',
+    scope: { 
       title: '@',
-	  iconClass: '@',
-	  href: '@'
-	},
-	link: navLink,
-	replace: false
+      iconClass: '@',
+      href: '@'
+    },
+    link: navLink,
+    replace: false
   };
 });
