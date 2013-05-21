@@ -21,4 +21,5 @@ Tasks
     - security
     - local storage
     - prettier interface
+    - rich text editor for description input
     - more tests
