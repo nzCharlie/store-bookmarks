@@ -5,82 +5,6 @@
 describe('controllers', function(){
   beforeEach(module('bookmarksCtrl'));
   
-  describe('MenuCtrl, when current path is /about ', function () {
-	 var scope, $rootScope, locationMock;
-	 
-	 beforeEach(function(){
-		this.addMatchers({
-			toHaveActiveNavAs: function (expectedNavActive) {
-				var endsWith = function (str, suffix) {
-				    return str.indexOf(suffix, str.length - suffix.length) !== -1;
-				}
-				
-				var expectedNavKey = expectedNavActive + 'NavActive'; 
-				for (var navs in this.actual) {
-					if (endsWith(navs, 'NavActive')) {
-						var expected = (navs == expectedNavKey) ? 'active' : '';
-						if (this.actual[navs] != expected) {
-							console.log(navs, ' is expected to be ', expected, ' actual ', this.actual[navs]);
-							return false;
-						}
-					}
-				} 
-				return true;
-			}
-		}); 
-	 });
-	 
-	 beforeEach(inject(function(_$rootScope_, $controller) {
-		 $rootScope = _$rootScope_;
-		 scope = $rootScope.$new();
-		 
-		 locationMock = jasmine.createSpyObj('locationMock', ['path'])
-		 locationMock.path.andCallFake(function () {
-			return '/about'; 
-		 });
-		 
-		 $controller('MenuCtrl', {$scope: scope, $location: locationMock});
-	 }));
-	 
-	 describe('when current path is home', function () {
-		 beforeEach(inject(function(_$rootScope_, $controller) {
-			 $rootScope = _$rootScope_;
-			 scope = $rootScope.$new();
-			 
-			 locationMock = jasmine.createSpyObj('locationMock', ['path'])
-			 locationMock.path.andCallFake(function () {
-				return '/home'; 
-			 });
-			 
-			 $controller('MenuCtrl', {$scope: scope, $location: locationMock});
-		 }));
-		 
-		 it('should make home to be active when current path is /home', function (){
-				expect(scope).toHaveActiveNavAs('home');
-		 }); 
-	 });
-	 
-	 it('should initialise isCollapsed with true', function(){
-		 expect(scope.isCollapsed).toBe(true);
-	 });
-	 
-	 it('should make about to be active when current path is /about', function (){
-		expect(scope).toHaveActiveNavAs('about');
-	 }); 
-	 
-	 it('should make about to be active when switchNav to about', function(){
-		 $rootScope.$broadcast('switchNav', 'about');
-		 
-		 expect(scope).toHaveActiveNavAs('about');
-	 });
-	 
-	 it('should make home to be active when switchNav to home', function(){	 
-		 $rootScope.$broadcast('switchNav', 'home');
-		 
-		 expect(scope).toHaveActiveNavAs('home');
-	 });
-  });
-  
   describe('LoadingCtrl', function () {
 	 var scope, $rootScope;
 		 
@@ -104,22 +28,6 @@ describe('controllers', function(){
 		 $rootScope.$broadcast('startLoading');
 		 expect(scope.isLoading).toBe(true);
 	 });
-  });
-  
-  describe('AboutCtrl', function () {
-	 var scope, rootScopeMock;
-		 
-	 beforeEach(inject(function($rootScope, $controller) {
-		 scope = $rootScope.$new();
-		 rootScopeMock = jasmine.createSpyObj('rootScopeMock',['$broadcast']); 
-		 
-		 $controller('AboutCtrl', {$scope: scope, $rootScope: rootScopeMock});
-	 }));
-	 
-	 it('should have broadcasted its location as about', function() {
-		expect(rootScopeMock.$broadcast).toHaveBeenCalledWith('switchNav', 'about'); 
-	 });
-	 
   });
   
   describe('BookmarksListCtrl', function () {

@@ -7,6 +7,8 @@ describe('directives', function() {
 	
   beforeEach(module('ui.directives'));
   
+  beforeEach(module('ui.bootstrap'));
+  
   beforeEach(inject(function($rootScope, $compile){
     scope = $rootScope.$new();
     elm = angular.element('<textarea rows="1" auto-grow></textarea>');

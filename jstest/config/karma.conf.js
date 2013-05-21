@@ -12,6 +12,7 @@ files = [
   'http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.js',
   'http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.js',
   'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js',
+  'http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js',
   'test/lib/angular/angular-mocks.js',
   '../src/main/webapp/scripts/**/*.js',
   'test/unit/**/*.js'
