@@ -83,6 +83,13 @@
       .bookmark-description-container {
         padding-top: 20px;
       }
+	  
+	  .bookmark-description {
+        color: #666666;
+        font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 15px;
+        line-height: 21px;
+	  }
       
       .control-group.error [class^="icon-"], .control-group.error [class*=" icon-"] {
       	color: #fff;
