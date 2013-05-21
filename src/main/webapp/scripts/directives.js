@@ -8,6 +8,7 @@ var autoGrowLink = function($scope, $element, $attrs) {
   }
   $scope.$watch($attrs.ngModel, update);
 } 
+autoGrowLink.$inject = ['$scope', '$element', '$attrs'];
 
 var menuCtrl = function($scope) {
   $scope.navs = [];
@@ -26,10 +27,12 @@ var menuCtrl = function($scope) {
     $scope.navs.push(nav);
   }
 }
+menuCtrl.$inject = ['$scope'];
 
 var navLink = function($scope, $element, $attrs, menuCtrl) {
   menuCtrl.addNav($scope);
 }
+navLink.$inject = ['$scope', '$element', '$attrs', 'menuCtrl'];
 
 angular.module('ui.directives', ['ui.bootstrap'])
 
