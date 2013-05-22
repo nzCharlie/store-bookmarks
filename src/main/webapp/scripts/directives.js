@@ -27,6 +27,19 @@ var navCtrl = function($scope, $element, $attrs, $transclude, $location) {
 }
 navCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', '$location'];
 
+var loadContainerCtrl = function($scope) {
+  $scope.isLoading = true;
+  $scope.$on('startLoading', function(event) {
+    console.log('start loading');
+	$scope.isLoading = true;
+  });
+  $scope.$on('finishLoading', function(event) {
+	console.log('finish loading');
+	$scope.isLoading = false;
+  });
+}
+loadContainerCtrl.$inject = ['$scope'];
+
 angular.module('ui.directives', ['ui.bootstrap'])
 
 .directive('autoGrow', function() {
@@ -55,11 +68,21 @@ angular.module('ui.directives', ['ui.bootstrap'])
     scope: { 
       title: '@',
       iconClass: '@',
-      href: '@',
-      matchExp: '@'
+      href: '@'
     },
     templateUrl: '/scripts/templates/nav.html',
     controller: navCtrl,
     replace: true
   };
+})
+
+.directive('loadContainer', function(){
+	return {
+		restrict: 'E',
+		transclude: true,
+		scope: true,
+		templateUrl: '/scripts/templates/load-container.html',
+		controller: loadContainerCtrl,
+		replace: true
+	};
 });

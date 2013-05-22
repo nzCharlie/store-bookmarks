@@ -97,14 +97,14 @@
       
   </style>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers.js"></script>
   <script src="scripts/services.js"></script>
   <script src="scripts/directives.js"></script>
   <script src="lib/jquery.autosize-min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular-resource.min.js"></script>
 </head>
 <body>
 
@@ -118,12 +118,11 @@
         <nav href="/about" icon-class="icon-user" title="About"></nav>
       </menu>
 
-      <!-- Begin page content -->
-      <div id="main" ng-controller="LoadingCtrl">
-		<div id="loading" ng-show="isLoading" class="container">
-			<h1 class="text-left"><i class="icon-refresh icon-spin"></i> Loading ... </h1>
-		</div>
-      	<div id="app" ng-hide="isLoading" ng-view></div>
+      <!-- Begin page content -->     
+      <div id="main">
+	      <load-container>
+	        <div id="app" ng-view></div>
+	      </load-container>
       </div>
 
       <div id="push"></div>

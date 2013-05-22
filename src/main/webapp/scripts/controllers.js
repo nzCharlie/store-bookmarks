@@ -4,18 +4,6 @@
 
 angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 
-.controller('LoadingCtrl', ['$scope', function($scope){
-	$scope.isLoading = true;
-	$scope.$on('startLoading', function(event) {
-		console.log('start loading');
-		$scope.isLoading = true;
-	});
-	$scope.$on('finishLoading', function(event) {
-		console.log('finish loading');
-		$scope.isLoading = false;
-	});
-}])
-
 .controller('BookmarksListCtrl', ['$scope', 'Bookmark', '$rootScope', 'Session', function($scope, Bookmark, $rootScope, Session){
 	$scope.isAscendingSort = angular.isUndefined(Session.isAscendingSort) ? true : Session.isAscendingSort;
 	$scope.sortSelection = angular.isUndefined(Session.sortSelection) ? 'name' : Session.sortSelection;

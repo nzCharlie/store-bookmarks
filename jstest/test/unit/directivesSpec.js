@@ -116,4 +116,29 @@ describe('directives', function() {
     });
   
   });
+  
+  describe('loadContainerCtrl', function () {
+	 var scope, $rootScope;
+		 
+	 beforeEach(inject(function(_$rootScope_) {
+		 $rootScope = _$rootScope_;
+		 scope = $rootScope.$new();
+		 
+		 loadContainerCtrl(scope);
+	 }));
+	 
+	 it('should default to isLoading', function(){
+		 expect(scope.isLoading).toBe(true);
+	 });
+	 
+	 it('should set isLoading to false when finishLoading', function() {
+		 $rootScope.$broadcast('finishLoading');
+		 expect(scope.isLoading).toBe(false);
+	 });
+	 
+	 it('should set isLoading to true when startLoading', function() {
+		 $rootScope.$broadcast('startLoading');
+		 expect(scope.isLoading).toBe(true);
+	 });
+  });
 });
