@@ -114,7 +114,7 @@
 
       <!-- Fixed navbar -->
       <menu brand="Bookmarks">
-        <nav href="/bookmarks" icon-class="icon-home" title="Home"></nav>
+        <nav href="/bookmarks" icon-class="icon-home" title="Home" match-exp="/bookmarks(/.+)?"></nav>
         <nav href="/about" icon-class="icon-user" title="About"></nav>
       </menu>
 

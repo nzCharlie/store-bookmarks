@@ -1,7 +1,6 @@
 'use strict';
 
 var autoGrowLink = function($scope, $element, $attrs) {   	
-  // set the initial value of the textbox
   $element.autosize();
   var update = function() {
     $element.trigger('autosize');
@@ -15,9 +14,15 @@ var menuCtrl = function($scope) {
 }
 menuCtrl.$inject = ['$scope'];
 
-var navCtrl = function($scope, $element, $attrs, $transclude, $location) { 
+var navCtrl = function($scope, $element, $attrs, $transclude, $location) {
+  var matchExp = $attrs.matchExp;
+  if (!angular.isDefined($attrs.matchExp)) {
+	  matchExp = $attrs.href;
+  }
+  $scope.matchRe = new RegExp(matchExp);
+	
   $scope.isActiveRoute = function() {
-   return $scope.href === $location.path();
+	return $location.path().match($scope.matchRe);
   };
 }
 navCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', '$location'];
@@ -50,7 +55,8 @@ angular.module('ui.directives', ['ui.bootstrap'])
     scope: { 
       title: '@',
       iconClass: '@',
-      href: '@'
+      href: '@',
+      matchExp: '@'
     },
     templateUrl: '/scripts/templates/nav.html',
     controller: navCtrl,

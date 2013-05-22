@@ -51,35 +51,68 @@ describe('directives', function() {
   });
   
   describe('navCtrl', function() {
-    var scope, locationMock;
+    var scope, attrs, locationMock;
     
     beforeEach(inject(function($rootScope){
       scope = $rootScope.$new();
       locationMock = jasmine.createSpyObj('$location', ['path']);
-      
-      navCtrl(scope, null, null, null, locationMock);
+      attrs = {};      
     }));
     
     it ('should be active if href is the same', function() {
       var currentPath = '/testing';
     
       scope.href = currentPath;
+      attrs.href = scope.href;
       locationMock.path.andCallFake(function () {
         return currentPath;
       });
       
-      expect(scope.isActiveRoute()).toBe(true);
+      navCtrl(scope, null, attrs, null, locationMock);
+      
+      expect(scope.isActiveRoute()).toBeTruthy();
+    });
+    
+    it ('should be active if matchExp matches', function() {
+      var currentPath = '/testing/afafdadf';
+  
+      scope.href = currentPath;
+      attrs.matchExp = '/testing(/.+)?';
+      locationMock.path.andCallFake(function () {
+        return currentPath;
+      });
+    
+      navCtrl(scope, null, attrs, null, locationMock);
+    
+      expect(scope.isActiveRoute()).toBeTruthy();
+    });
+
+    it ('should be active if matchExp does not match', function() {
+      var currentPath = '/testinadfadf';
+
+      scope.href = currentPath;
+      attrs.matchExp = '/testing(/.+)?';
+      locationMock.path.andCallFake(function () {
+        return currentPath;
+      });
+  
+      navCtrl(scope, null, attrs, null, locationMock);
+  
+      expect(scope.isActiveRoute()).toBeFalsy();
     });
     
     it ('should not be active if href is the same', function() {
       var currentPath = '/testing';
     
       scope.href = currentPath + "blah";
+      attrs.href = scope.href;
       locationMock.path.andCallFake(function () {
         return currentPath;
       });
       
-      expect(scope.isActiveRoute()).toBe(false);
+      navCtrl(scope, null, attrs, null, locationMock);
+      
+      expect(scope.isActiveRoute()).toBeFalsy();
     });
   
   });
