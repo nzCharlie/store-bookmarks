@@ -47,7 +47,6 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 	}
 	
 	load();
-	$rootScope.$broadcast('switchNav', 'home');	
 
 	$scope.hasDescription = function (bookmark) {
 		return $.trim(bookmark.description).length > 0;

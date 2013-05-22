@@ -116,10 +116,6 @@ describe('controllers', function(){
 		 expect(scope).toHaveCorrectSortViewValues({sortSelection: 'someProperty', isAscendingSort: true});
 	 });
 	 
-	 it('should have broadcasted its location as home', function() {
-		expect(rootScopeMock.$broadcast).toHaveBeenCalledWith('switchNav', 'home'); 
-	 });
-	 
 	 it('should have queried Bookmark service for bookmarks', function() {
 		expect(BookmarkMock.query).toHaveBeenCalledWith({}, jasmine.any(Function)); 
 	 });
