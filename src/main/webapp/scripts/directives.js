@@ -11,28 +11,16 @@ var autoGrowLink = function($scope, $element, $attrs) {
 autoGrowLink.$inject = ['$scope', '$element', '$attrs'];
 
 var menuCtrl = function($scope) {
-  $scope.navs = [];
   $scope.isCollapsed = false;
-
-  $scope.select = function(nav) {
-    angular.forEach($scope.navs, function(nav) {
-      nav.selected = false;
-    });
-    nav.selected = true;
-  };
-
-  this.addNav = function(nav) {
-    if ($scope.navs.length == 0) 
-      $scope.select(nav); // select the first one by default
-    $scope.navs.push(nav);
-  }
 }
 menuCtrl.$inject = ['$scope'];
 
-var navLink = function($scope, $element, $attrs, menuCtrl) {
-  menuCtrl.addNav($scope);
+var navCtrl = function($scope, $element, $attrs, $transclude, $location) { 
+  $scope.isActiveRoute = function() {
+   return $scope.href === $location.path();
+  };
 }
-navLink.$inject = ['$scope', '$element', '$attrs', 'menuCtrl'];
+navCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', '$location'];
 
 angular.module('ui.directives', ['ui.bootstrap'])
 
@@ -47,29 +35,10 @@ angular.module('ui.directives', ['ui.bootstrap'])
 .directive('menu', function() {
   return {
     restrict: 'E',
-    transclude: true, // need to ensure child element survives 
+    transclude: true,
     scope: {brand: '@'},
     controller: menuCtrl,
-    template:
-      '<div class="navbar navbar-fixed-top">'+
-        '<div class="navbar-inner">'+
-          '<div class="container">'+
-            '<button type="button" class="btn btn-navbar" ng-model="isCollapsed" btn-checkbox>'+
-              '<span class="icon-bar"></span>'+
-              '<span class="icon-bar"></span>'+
-              '<span class="icon-bar"></span>'+
-            '</button>'+
-            '<a class="brand" href="#">{{brand}}</a>'+
-            '<div class="nav-collapse collapse" collapse="isCollapsed">'+
-              '<ul class="nav">'+
-                '<li ng-repeat="nav in navs" ng-class="{active: nav.selected}">' +
-                  '<a ng-href="#{{nav.href}}" ng-click="select(nav)"><i class="{{nav.iconClass}}"></i> {{nav.title}}</a>' +
-                '</li>' +
-              '</ul>'+
-            '</div>'+
-          '</div>'+
-        '</div>'+
-      '</div>',
+    templateUrl: '/scripts/templates/menu.html',
     replace: true
   };
 })
@@ -83,7 +52,8 @@ angular.module('ui.directives', ['ui.bootstrap'])
       iconClass: '@',
       href: '@'
     },
-    link: navLink,
-    replace: false
+    templateUrl: '/scripts/templates/nav.html',
+    controller: navCtrl,
+    replace: true
   };
 });

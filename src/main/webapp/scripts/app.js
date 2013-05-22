@@ -18,8 +18,7 @@ angular.module('bookmarks', ['bookmarksCtrl', 'ui.bootstrap', 'bookmarksServices
     	  controller: 'BookmarkEditCtrl'
       }).
       when('/about', {
-    	  templateUrl: '/partials/about', 
-    	  controller: 'AboutCtrl'
+    	  templateUrl: '/partials/about'
       }).
       otherwise({redirectTo: '/bookmarks'});
 }]);

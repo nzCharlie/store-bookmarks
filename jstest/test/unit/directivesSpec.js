@@ -44,66 +44,42 @@ describe('directives', function() {
       controllerUnderTest = $controller('menuCtrl', {$scope: scope});
     }));
     
-    it ('should ensure by default isCollapsed should be false, navs should be empty', function() {
+    it ('should ensure by default isCollapsed should be false', function() {
       expect(scope.isCollapsed).toBe(false);
-      expect(scope.navs.length).toBe(0);
     });
     
-    it ('should ensure adding a nav should it added to navs ', function() {
-      var nav1 = {};
-      var nav2 = {};
-    
-      controllerUnderTest.addNav(nav1);
-      expect(scope.navs.length).toBe(1);
-      expect(scope.navs[0]).toBe(nav1);
-      
-      controllerUnderTest.addNav(nav2);
-      expect(scope.navs.length).toBe(2);
-      expect(scope.navs[1]).toBe(nav2);
-    });
-    
-    it ('should ensure adding the first nav should be selected ', function() {
-      var nav = {};
-    
-      controllerUnderTest.addNav(nav);
-      expect(scope.navs.length).toBe(1);
-      expect(scope.navs[0].selected).toBe(true);
-    });
-    
-    it ('should be able to select the specific nav ', function() {
-      var nav1 = {};
-      var nav2 = {};
-    
-      controllerUnderTest.addNav(nav1);
-      expect(scope.navs[0].selected).toBe(true);
-      expect(scope.navs[0]).toBe(nav1);
-      
-      controllerUnderTest.addNav(nav2);
-      expect(scope.navs.length).toBe(2);
-      expect(scope.navs[1].selected).toBeFalsy();
-      expect(scope.navs[1]).toBe(nav2);
-      
-      scope.select(nav2);
-      expect(nav2.selected).toBe(true);
-      expect(nav1.selected).toBeFalsy();
-    });
   });
   
-  describe('navLink', function() {
-    var scope, menuCtrlMock;
+  describe('navCtrl', function() {
+    var scope, locationMock;
     
     beforeEach(inject(function($rootScope){
       scope = $rootScope.$new();
+      locationMock = jasmine.createSpyObj('$location', ['path']);
       
-      menuCtrlMock = jasmine.createSpyObj('menuCtrlMock', ['addNav']);
-      var elm = jasmine.createSpy('elm');
-      var attrs = jasmine.createSpy('attrs');
-      
-      navLink(scope, elm, attrs, menuCtrlMock);
+      navCtrl(scope, null, null, null, locationMock);
     }));
     
-    it ('should have called addNav', function() {
-      expect(menuCtrlMock.addNav).toHaveBeenCalledWith(scope);
+    it ('should be active if href is the same', function() {
+      var currentPath = '/testing';
+    
+      scope.href = currentPath;
+      locationMock.path.andCallFake(function () {
+        return currentPath;
+      });
+      
+      expect(scope.isActiveRoute()).toBe(true);
+    });
+    
+    it ('should not be active if href is the same', function() {
+      var currentPath = '/testing';
+    
+      scope.href = currentPath + "blah";
+      locationMock.path.andCallFake(function () {
+        return currentPath;
+      });
+      
+      expect(scope.isActiveRoute()).toBe(false);
     });
   
   });

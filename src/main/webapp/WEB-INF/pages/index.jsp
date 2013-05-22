@@ -113,7 +113,7 @@
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <menu brand="Bookmarks" ng-transclude>
+      <menu brand="Bookmarks">
         <nav href="/bookmarks" icon-class="icon-home" title="Home"></nav>
         <nav href="/about" icon-class="icon-user" title="About"></nav>
       </menu>
