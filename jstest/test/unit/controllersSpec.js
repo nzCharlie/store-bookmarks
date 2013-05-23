@@ -6,7 +6,7 @@ describe('controllers', function(){
   beforeEach(module('bookmarksCtrl'));
   
   describe('BookmarksListCtrl', function () {
-	 var scope, Session, BookmarkMock, loadingTopic;
+	 var scope, session, BookmarkMock, loadingTopic;
 	 
 	 beforeEach(function(){
 		this.addMatchers({
@@ -50,9 +50,9 @@ describe('controllers', function(){
 		 });
 		 loadingTopic = jasmine.createSpyObj('loadingTopic', ['dispatch']);
 		 
-		 Session = {isAscendingSort : false, sortSelection : 'someProperty'};
+		 session = {isAscendingSort : false, sortSelection : 'someProperty'};
 		 
-		 $controller('BookmarksListCtrl', {$scope: scope, Bookmark: BookmarkMock, Session: Session, loadingTopic: loadingTopic});
+		 $controller('BookmarksListCtrl', {$scope: scope, Bookmark: BookmarkMock, session: session, loadingTopic: loadingTopic});
 	 }));
 	 
 	 describe("Default behaviour", function(){
@@ -60,9 +60,9 @@ describe('controllers', function(){
 		 beforeEach(inject(function($rootScope, $controller) {		 
 			 scope = $rootScope.$new();
 			 BookmarkMock = jasmine.createSpyObj('Bookmark', ['query']);
-			 Session = {};
+			 session = {};
 
-			 $controller('BookmarksListCtrl', {$scope: scope, Bookmark: BookmarkMock, Session: Session});
+			 $controller('BookmarksListCtrl', {$scope: scope, Bookmark: BookmarkMock, session: session});
 		 }));
 		 
 		 it('should have default to ascording sort by name', function(){
@@ -72,8 +72,8 @@ describe('controllers', function(){
 	 });
 	 
 	 it('should have updated Session values to be same as scope', function(){
-		 expect(Session.isAscendingSort).toBe(scope.isAscendingSort);
-		 expect(Session.sortSelection).toBe(scope.sortSelection);
+		 expect(session.isAscendingSort).toBe(scope.isAscendingSort);
+		 expect(session.sortSelection).toBe(scope.sortSelection);
 	 });
 	 
 	 it('should have updated sort values when sortSelection changed', function(){
