@@ -118,26 +118,32 @@ describe('directives', function() {
   });
   
   describe('loadContainerCtrl', function () {
-	 var scope, $rootScope;
+	 var scope, loadingTopic;
 		 
-	 beforeEach(inject(function(_$rootScope_) {
-		 $rootScope = _$rootScope_;
+	 beforeEach(inject(function($rootScope) {
 		 scope = $rootScope.$new();
+		 loadingTopic = jasmine.createSpyObj('loadingTopic', ['addListener']);
 		 
-		 loadContainerCtrl(scope);
+		 loadContainerCtrl(scope, null, null, null, loadingTopic);
 	 }));
 	 
 	 it('should default to isLoading', function(){
 		 expect(scope.isLoading).toBe(true);
 	 });
 	 
+	 it('should added a listener function to the topic', function(){
+		 expect(loadingTopic.addListener).toHaveBeenCalledWith(jasmine.any(Function));
+	 });
+	 
 	 it('should set isLoading to false when finishLoading', function() {
-		 $rootScope.$broadcast('finishLoading');
+		 var listenerFunc = loadingTopic.addListener.argsForCall[0][0];
+		 listenerFunc('finishLoading');
 		 expect(scope.isLoading).toBe(false);
 	 });
 	 
 	 it('should set isLoading to true when startLoading', function() {
-		 $rootScope.$broadcast('startLoading');
+		 var listenerFunc = loadingTopic.addListener.argsForCall[0][0];
+		 listenerFunc('startLoading');
 		 expect(scope.isLoading).toBe(true);
 	 });
   });

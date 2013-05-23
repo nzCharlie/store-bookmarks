@@ -4,7 +4,7 @@
 
 angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.directives'])
 
-.controller('BookmarksListCtrl', ['$scope', 'Bookmark', '$rootScope', 'Session', 'loadingTopic',  function($scope, Bookmark, $rootScope, Session, loadingTopic){
+.controller('BookmarksListCtrl', ['$scope', 'Bookmark', 'Session', 'loadingTopic',  function($scope, Bookmark, Session, loadingTopic){
 	$scope.isAscendingSort = angular.isUndefined(Session.isAscendingSort) ? true : Session.isAscendingSort;
 	$scope.sortSelection = angular.isUndefined(Session.sortSelection) ? 'name' : Session.sortSelection;
 
@@ -43,7 +43,7 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.dire
 	}
 }])
 
-.controller('BookmarkAddCtrl', ['$scope', 'Bookmark', '$location', '$rootScope', function($scope, Bookmark, $location, $rootScope){
+.controller('BookmarkAddCtrl', ['$scope', 'Bookmark', '$location', function($scope, Bookmark, $location){
 	$scope.action = 'Add';
 	
 	$scope.$on('submit', function (event, bookmark){
@@ -58,8 +58,8 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.dire
 	});
 }])
 
-.controller('BookmarkEditCtrl', ['$scope', 'Bookmark', '$routeParams', '$location', '$rootScope', 'loadingTopic', 
-                                 function($scope, Bookmark, $routeParams, $location, $rootScope, loadingTopic) {
+.controller('BookmarkEditCtrl', ['$scope', 'Bookmark', '$routeParams', '$location', 'loadingTopic', 
+                                 function($scope, Bookmark, $routeParams, $location, loadingTopic) {
 	$scope.action = 'Edit';
 	
 	//$rootScope.$broadcast('startLoading');

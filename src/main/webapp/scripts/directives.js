@@ -29,14 +29,6 @@ navCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', '$location'];
 
 var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingTopic) {
   $scope.isLoading = true;
-/*
-  $scope.$on('startLoading', function(event) {
-	$scope.isLoading = true;
-  });
-  $scope.$on('finishLoading', function(event) {
-    $scope.isLoading = false;
-  });
-*/
   loadingTopic.addListener(function (event) {
 	 if (event == 'startLoading') {
 		 $scope.isLoading = true;
