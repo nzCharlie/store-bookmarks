@@ -11,7 +11,7 @@ factory('Bookmark', ['$resource', function($resource){
 }]);
 
 angular.module('sessionService', []).
-factory('Session', function(){
+factory('session', function(){
 	var session = {};
 	return session;
 });

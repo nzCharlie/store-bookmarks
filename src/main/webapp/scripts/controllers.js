@@ -2,15 +2,15 @@
 
 /* Controllers */
 
-angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.directives'])
+angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives'])
 
-.controller('BookmarksListCtrl', ['$scope', 'Bookmark', 'Session', 'loadingTopic',  function($scope, Bookmark, Session, loadingTopic){
-	$scope.isAscendingSort = angular.isUndefined(Session.isAscendingSort) ? true : Session.isAscendingSort;
-	$scope.sortSelection = angular.isUndefined(Session.sortSelection) ? 'name' : Session.sortSelection;
+.controller('BookmarksListCtrl', ['$scope', 'Bookmark', 'session', 'loadingTopic',  function($scope, Bookmark, session, loadingTopic){
+	$scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
+	$scope.sortSelection = angular.isUndefined(session.sortSelection) ? 'name' : session.sortSelection;
 
 	var updateSortOrder = function () {
-		Session.sortSelection = $scope.sortSelection;
-		Session.isAscendingSort = $scope.isAscendingSort;
+		session.sortSelection = $scope.sortSelection;
+		session.isAscendingSort = $scope.isAscendingSort;
 		
 		var sortPrefix = !$scope.isAscendingSort ? '-' : '';
 		$scope.sortDirectionIconClass = !$scope.isAscendingSort ? 'icon-arrow-down' : 'icon-arrow-up';
@@ -22,15 +22,11 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.dire
 	
 	var load = function () {
 		console.log('refreshing');
-		//$rootScope.$broadcast('startLoading');
 		loadingTopic.dispatch('startLoading');
 		$scope.bookmarks = Bookmark.query({}, function () {
-			//$rootScope.$broadcast('finishLoading');
 			loadingTopic.dispatch('finishLoading');
 		});
 	};
-		
-	//$scope.$on('refresh', load);
 	
 	$scope.deleteBookmark = function (bookmark) {
 		bookmark.$delete({bookmarkId: bookmark.id}, load);
@@ -62,14 +58,12 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.dire
                                  function($scope, Bookmark, $routeParams, $location, loadingTopic) {
 	$scope.action = 'Edit';
 	
-	//$rootScope.$broadcast('startLoading');
 	loadingTopic.dispatch('startLoading');
 	var bookmark = Bookmark.get({bookmarkId: $routeParams.bookmarkId}, function() {
 		$scope.name = bookmark.name;
 		$scope.url = bookmark.url;
 		$scope.description = bookmark.description;
 		loadingTopic.dispatch('finishLoading');
-		//$rootScope.$broadcast('finishLoading');
 	});
 	
 	$scope.$on('submit', function (event, updatedBookmark){

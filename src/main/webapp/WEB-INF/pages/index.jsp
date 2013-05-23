@@ -48,12 +48,12 @@
       /* Custom page CSS
       -------------------------------------------------- */
       /* Not required for template or sticky footer method. */
-      #main .container {
+      #main .container:first-of-type {
         padding-top: 60px;
       }
       
       @media (max-width: 979px) {
-        #main .container {
+        #main .container:first-of-type {
           padding-top: 0px;
         }
       } 
