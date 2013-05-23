@@ -10,7 +10,7 @@ var autoGrowLink = function($scope, $element, $attrs) {
 autoGrowLink.$inject = ['$scope', '$element', '$attrs'];
 
 var menuCtrl = function($scope) {
-  $scope.isCollapsed = false;
+  $scope.isCollapsed = true;
 }
 menuCtrl.$inject = ['$scope'];
 

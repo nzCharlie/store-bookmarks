@@ -44,8 +44,8 @@ describe('directives', function() {
       controllerUnderTest = $controller('menuCtrl', {$scope: scope});
     }));
     
-    it ('should ensure by default isCollapsed should be false', function() {
-      expect(scope.isCollapsed).toBe(false);
+    it ('should ensure by default isCollapsed should be true', function() {
+      expect(scope.isCollapsed).toBe(true);
     });
     
   });
