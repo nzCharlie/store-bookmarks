@@ -68,14 +68,18 @@ angular.module('ui.directives', ['ui.bootstrap'])
  */
 
 var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingTopic) {
+  $scope.count = 0;
   $scope.isLoading = false;
+  
   loadingTopic.addListener(function (event) {
 	 if (event == 'startLoading') {
-		 $scope.isLoading = true;
+		 $scope.count ++;
 	 }
 	 else if (event == 'finishLoading') {
-		 $scope.isLoading = false;
+		 if ($scope.count > 0)
+			 $scope.count --;
 	 }
+	 $scope.isLoading = $scope.count > 0;
   });
 }
 loadContainerCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', 'loadingTopic'];

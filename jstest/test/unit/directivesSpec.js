@@ -146,5 +146,46 @@ describe('directives', function() {
 		 listenerFunc('startLoading');
 		 expect(scope.isLoading).toBe(true);
 	 });
+	 
+	 it ('should set isLoading to true when startLoading greater than finishLoading', function() {
+		 var listenerFunc = loadingTopic.addListener.argsForCall[0][0];
+		 
+		 listenerFunc('startLoading');
+		 listenerFunc('startLoading');
+		 listenerFunc('finishLoading');
+		 expect(scope.isLoading).toBe(true);
+	 });
+	 
+	 it ('should set isLoading to false when startLoading equal to finishLoading', function() {
+		 var listenerFunc = loadingTopic.addListener.argsForCall[0][0];
+		 
+		 listenerFunc('startLoading');
+		 listenerFunc('startLoading');
+		 listenerFunc('finishLoading');
+		 listenerFunc('finishLoading');
+		 expect(scope.isLoading).toBe(false);
+	 });
+	 
+	 it ('should set isLoading to false when startLoading less than finishLoading', function() {
+		 var listenerFunc = loadingTopic.addListener.argsForCall[0][0];
+		 
+		 listenerFunc('startLoading');
+		 listenerFunc('startLoading');
+		 listenerFunc('finishLoading');
+		 listenerFunc('finishLoading');
+		 listenerFunc('finishLoading');
+		 expect(scope.isLoading).toBe(false);
+	 });
+	 
+	 it ('should ensure that finishingLoading before startLoading does not count.', function() {
+		 var listenerFunc = loadingTopic.addListener.argsForCall[0][0];
+		 
+		 listenerFunc('finishLoading');
+		 listenerFunc('startLoading');
+		 listenerFunc('startLoading');
+		 listenerFunc('finishLoading');
+		 expect(scope.isLoading).toBe(true);
+	 });
+	 
   });
 });
