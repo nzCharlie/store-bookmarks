@@ -57,15 +57,18 @@
           padding-top: 0px;
         }
       } 
-      
-      #loading {
-        /* centering the loading div */
+
+      /* centering the loading div */      
+      .loading {
         position: fixed;
         top: 50%;
-        margin-top: -22px; /* half of height */ 
         left: 50%;
-        margin-left: -125px; /* half of width */
         text-align: center;
+      }
+      
+      #mainLoading .loading {
+        margin-top: -22px; /* half of height */
+        margin-left: -125px; /* half of width */
       }
       
       .container .credit {
@@ -131,7 +134,7 @@
 
       <!-- Begin page content -->     
       <div id="main">
-	      <load-container>
+	      <load-container id='mainLoading'>
 	        <div id="app" ng-view></div>
 	      </load-container>
       </div>
