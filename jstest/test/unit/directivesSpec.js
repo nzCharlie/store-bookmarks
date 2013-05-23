@@ -128,7 +128,7 @@ describe('directives', function() {
 	 }));
 	 
 	 it('should default to isLoading', function(){
-		 expect(scope.isLoading).toBe(true);
+		 expect(scope.isLoading).toBe(false);
 	 });
 	 
 	 it('should added a listener function to the topic', function(){
