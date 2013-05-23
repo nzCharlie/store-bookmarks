@@ -27,20 +27,28 @@ var navCtrl = function($scope, $element, $attrs, $transclude, $location) {
 }
 navCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', '$location'];
 
-var loadContainerCtrl = function($scope) {
+var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingTopic) {
   $scope.isLoading = true;
+/*
   $scope.$on('startLoading', function(event) {
-    console.log('start loading');
 	$scope.isLoading = true;
   });
   $scope.$on('finishLoading', function(event) {
-	console.log('finish loading');
-	$scope.isLoading = false;
+    $scope.isLoading = false;
+  });
+*/
+  loadingTopic.addListener(function (event) {
+	 if (event == 'startLoading') {
+		 $scope.isLoading = true;
+	 }
+	 else if (event == 'finishLoading') {
+		 $scope.isLoading = false;
+	 }
   });
 }
-loadContainerCtrl.$inject = ['$scope'];
+loadContainerCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', 'loadingTopic'];
 
-angular.module('ui.directives', ['ui.bootstrap'])
+angular.module('ui.directives', ['ui.bootstrap', 'messaging'])
 
 .directive('autoGrow', function() {
   return {
@@ -75,6 +83,10 @@ angular.module('ui.directives', ['ui.bootstrap'])
     replace: true
   };
 })
+
+.factory('loadingTopic', ['EventDispatcher', function(EventDispatcher){
+	return EventDispatcher.getInstance("loadingTopic");
+}])
 
 .directive('loadContainer', function(){
 	return {

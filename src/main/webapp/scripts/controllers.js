@@ -2,9 +2,9 @@
 
 /* Controllers */
 
-angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
+angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService', 'ui.directives'])
 
-.controller('BookmarksListCtrl', ['$scope', 'Bookmark', '$rootScope', 'Session', function($scope, Bookmark, $rootScope, Session){
+.controller('BookmarksListCtrl', ['$scope', 'Bookmark', '$rootScope', 'Session', 'loadingTopic',  function($scope, Bookmark, $rootScope, Session, loadingTopic){
 	$scope.isAscendingSort = angular.isUndefined(Session.isAscendingSort) ? true : Session.isAscendingSort;
 	$scope.sortSelection = angular.isUndefined(Session.sortSelection) ? 'name' : Session.sortSelection;
 
@@ -22,9 +22,11 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 	
 	var load = function () {
 		console.log('refreshing');
-		$rootScope.$broadcast('startLoading');
+		//$rootScope.$broadcast('startLoading');
+		loadingTopic.dispatch('startLoading');
 		$scope.bookmarks = Bookmark.query({}, function () {
-			$rootScope.$broadcast('finishLoading');
+			//$rootScope.$broadcast('finishLoading');
+			loadingTopic.dispatch('finishLoading');
 		});
 	};
 		
@@ -39,8 +41,6 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 	$scope.hasDescription = function (bookmark) {
 		return $.trim(bookmark.description).length > 0;
 	}
-	
-	console.log("list controller finished.");
 }])
 
 .controller('BookmarkAddCtrl', ['$scope', 'Bookmark', '$location', '$rootScope', function($scope, Bookmark, $location, $rootScope){
@@ -58,16 +58,18 @@ angular.module('bookmarksCtrl', ['bookmarksServices', 'sessionService'])
 	});
 }])
 
-.controller('BookmarkEditCtrl', ['$scope', 'Bookmark', '$routeParams', '$location', '$rootScope', function($scope, Bookmark, $routeParams, $location, $rootScope) {
+.controller('BookmarkEditCtrl', ['$scope', 'Bookmark', '$routeParams', '$location', '$rootScope', 'loadingTopic', 
+                                 function($scope, Bookmark, $routeParams, $location, $rootScope, loadingTopic) {
 	$scope.action = 'Edit';
 	
-	$rootScope.$broadcast('startLoading');
+	//$rootScope.$broadcast('startLoading');
+	loadingTopic.dispatch('startLoading');
 	var bookmark = Bookmark.get({bookmarkId: $routeParams.bookmarkId}, function() {
 		$scope.name = bookmark.name;
 		$scope.url = bookmark.url;
 		$scope.description = bookmark.description;
-		
-		$rootScope.$broadcast('finishLoading');
+		loadingTopic.dispatch('finishLoading');
+		//$rootScope.$broadcast('finishLoading');
 	});
 	
 	$scope.$on('submit', function (event, updatedBookmark){
