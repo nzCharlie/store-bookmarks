@@ -68,7 +68,7 @@ angular.module('ui.directives', ['ui.bootstrap'])
  */
 
 var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingTopic) {
-  $scope.isLoading = true;
+  $scope.isLoading = false;
   loadingTopic.addListener(function (event) {
 	 if (event == 'startLoading') {
 		 $scope.isLoading = true;
