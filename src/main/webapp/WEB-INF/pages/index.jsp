@@ -48,15 +48,25 @@
       /* Custom page CSS
       -------------------------------------------------- */
       /* Not required for template or sticky footer method. */
-      #main .container:first-of-type {
+      #main .container {
         padding-top: 60px;
       }
-      
+            
       @media (max-width: 979px) {
-        #main .container:first-of-type {
+        #main .container {
           padding-top: 0px;
         }
       } 
+      
+      #loading {
+        /* centering the loading div */
+        position: fixed;
+        top: 50%;
+        margin-top: -22px; /* half of height */ 
+        left: 50%;
+        margin-left: -125px; /* half of width */
+        text-align: center;
+      }
       
       .container .credit {
         margin: 20px 0;
