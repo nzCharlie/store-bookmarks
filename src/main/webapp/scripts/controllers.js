@@ -7,7 +7,19 @@ angular
 
     .controller('BookmarksListCtrl', 
       [ '$scope', 'Bookmark', 'session', 'loadingTopic', function($scope, Bookmark, session, loadingTopic) {
-          
+      
+      if (angular.isUndefined(session.isLoadingRegistered)) {
+        console.log('register loading');
+        Bookmark.addStartListener(function () {
+          loadingTopic.dispatch('startLoading');
+        });
+        Bookmark.addFinishListener(function () {
+          loadingTopic.dispatch('finishLoading');
+        });
+        
+        session.isLoadingRegistered = true;
+      }
+        
       $scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
       $scope.sortSelection = angular.isUndefined(session.sortSelection) ? 'name' : session.sortSelection;
 
@@ -25,11 +37,7 @@ angular
       updateSortOrder();
 
       var load = function() {
-        console.log('refreshing');
-        loadingTopic.dispatch('startLoading');
-        $scope.bookmarks = Bookmark.query({}, function() {
-          loadingTopic.dispatch('finishLoading');
-        });
+        $scope.bookmarks = Bookmark.query({});
       };
 
       $scope.deleteBookmark = function(bookmark) {
@@ -66,14 +74,14 @@ angular
       [ '$scope', 'Bookmark', '$routeParams', '$location', 'loadingTopic', function($scope, Bookmark, $routeParams, $location, loadingTopic) {
       $scope.action = 'Edit';
 
-      loadingTopic.dispatch('startLoading');
+      //loadingTopic.dispatch('startLoading');
       var bookmark = Bookmark.get({
         bookmarkId : $routeParams.bookmarkId
       }, function() {
         $scope.name = bookmark.name;
         $scope.url = bookmark.url;
         $scope.description = bookmark.description;
-        loadingTopic.dispatch('finishLoading');
+        //loadingTopic.dispatch('finishLoading');
       });
 
       $scope.$on('submit', function(event, updatedBookmark) {
