@@ -29,7 +29,7 @@ var Listeners = function () {
   
   this.size = function () {
     return size;
-  }
+  };
 };
 
 angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
@@ -72,13 +72,13 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
   
   bookmarkTopic.addListener(function (event) {
     if (event == 'start') {
-      console.log('start listener size: ' + startListeners.size());
+      //console.log('start listener size: ' + startListeners.size());
       angular.forEach(startListeners.listeners, function (value, key) {
         value.call(Bookmark);
       });
     }
     else if (event == 'finish') {
-      console.log('finish listener size: ' + finishListeners.size());
+      //console.log('finish listener size: ' + finishListeners.size());
       angular.forEach(finishListeners.listeners, function (value, key) {
         value.call(Bookmark);
       });

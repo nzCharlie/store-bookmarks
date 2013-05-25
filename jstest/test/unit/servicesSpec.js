@@ -24,6 +24,89 @@ describe('service', function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     });
+    
+    describe("loading listeners", function() {
+      var startListener, finishListener, startListenerHandle, finishListenerHandle;
+      
+      beforeEach(function(){
+        startListener = jasmine.createSpy('startListener');
+        finishListener = jasmine.createSpy('finishListener');
+        
+        startListenerHandle = BookmarkResource.addStartListener(startListener);
+        finishListenerHandle = BookmarkResource.addFinishListener(finishListener);
+      });
+      
+      afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();        
+        
+        BookmarkResource.removeFinishListener(finishListenerHandle);
+        BookmarkResource.removeStartListener(startListenerHandle);
+      });
+      
+      it("should notified listeners when querying", function() {
+        $httpBackend.expectGET('/rest/bookmarks/list').respond([ bookmark ]);        
+        BookmarkResource.query({});
+        
+        expect(startListener).toHaveBeenCalled();
+        expect(finishListener).not.toHaveBeenCalled();
+        $httpBackend.flush();
+        expect(finishListener).toHaveBeenCalled();
+      });
+      
+      it("should notified listeners when getting", function() {
+        $httpBackend.expect('GET', '/rest/bookmarks/1').respond(bookmark);
+        BookmarkResource.get({
+          bookmarkId : bookmark.id
+        });        
+        expect(startListener).toHaveBeenCalled();
+        expect(finishListener).not.toHaveBeenCalled();
+        $httpBackend.flush();
+        expect(finishListener).toHaveBeenCalled();
+      });
+      
+      it ("should notified listeners when deleting", function() {
+        $httpBackend.expect('GET', '/rest/bookmarks/1').respond(bookmark);
+
+        var aBookmark = BookmarkResource.get({
+          bookmarkId : 1
+        });
+        $httpBackend.flush();
+        
+        startListener.reset();
+        finishListener.reset();
+
+        $httpBackend.expect('DELETE', '/rest/bookmarks/1').respond(204);
+        aBookmark.$delete({
+          bookmarkId : aBookmark.id
+        });
+        
+        expect(startListener).toHaveBeenCalled();
+        $httpBackend.flush();
+        expect(finishListener).toHaveBeenCalled();
+      });
+      
+      it('should be able to save bookmark', function() {
+        $httpBackend.expect('GET', '/rest/bookmarks/1').respond(bookmark);
+
+        var aBookmark = BookmarkResource.get({
+          bookmarkId : 1
+        });
+        $httpBackend.flush();
+        
+        startListener.reset();
+        finishListener.reset();
+
+        aBookmark.description = 'this';
+        $httpBackend.expect('POST', '/rest/bookmarks/1', angular.toJson(aBookmark)).respond(200);
+
+        aBookmark.$save({});
+        
+        expect(startListener).toHaveBeenCalled();
+        $httpBackend.flush();
+        expect(finishListener).toHaveBeenCalled();
+      });
+    });
 
     it('should be able to list bookmarks', function() {
       $httpBackend.expectGET('/rest/bookmarks/list').respond([ bookmark ]);

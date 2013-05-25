@@ -6,7 +6,7 @@ describe('controllers', function() {
   beforeEach(module('bookmarksCtrl'));
 
   describe('BookmarksListCtrl', function() {
-    var scope, session, BookmarkMock, loadingTopic;
+    var scope, session, BookmarkMock;
 
     beforeEach(function() {
       this.addMatchers({
@@ -48,7 +48,6 @@ describe('controllers', function() {
       BookmarkMock.query.andCallFake(function() {
         return 'Bookmark.query called';
       });
-      loadingTopic = jasmine.createSpyObj('loadingTopic', [ 'dispatch' ]);
 
       session = {
         isAscendingSort : false,
@@ -58,8 +57,7 @@ describe('controllers', function() {
       $controller('BookmarksListCtrl', {
         $scope : scope,
         Bookmark : BookmarkMock,
-        session : session,
-        loadingTopic : loadingTopic
+        session : session
       });
     }));
 
@@ -112,17 +110,7 @@ describe('controllers', function() {
     });
 
     it('should have queried Bookmark service for bookmarks', function() {
-      expect(BookmarkMock.query).toHaveBeenCalledWith({}, jasmine.any(Function));
-    });
-
-    it('should have queried Bookmark service for bookmarks and started loading', function() {
-      expect(loadingTopic.dispatch).toHaveBeenCalledWith('startLoading');
-      expect(scope.bookmarks).toBe('Bookmark.query called');
-
-      // second param is the success function
-      var loadingFunc = BookmarkMock.query.argsForCall[0][1];
-      loadingFunc();
-      expect(loadingTopic.dispatch).toHaveBeenCalledWith('finishLoading');
+      expect(BookmarkMock.query).toHaveBeenCalledWith({});
     });
 
     it('should have a function: deleteBookmark to delete bookmark, which will reload bookmarks', function() {
@@ -131,7 +119,6 @@ describe('controllers', function() {
       var bookmark = jasmine.createSpyObj('bookmark', [ '$delete' ]);
       bookmark.id = 1;
 
-      loadingTopic.dispatch.reset();
       BookmarkMock.query.reset();
 
       scope.deleteBookmark(bookmark);
@@ -142,12 +129,7 @@ describe('controllers', function() {
       var deleteBookmarkSuccessFunc = bookmark.$delete.argsForCall[0][1];
       deleteBookmarkSuccessFunc();
 
-      expect(loadingTopic.dispatch).toHaveBeenCalledWith('startLoading');
       expect(scope.bookmarks).toBe('Bookmark.query called');
-      // second param is the success function
-      var loadingFunc = BookmarkMock.query.argsForCall[0][1];
-      loadingFunc();
-      expect(loadingTopic.dispatch).toHaveBeenCalledWith('finishLoading');
     });
 
     it('should have a function check if the description of a bookmark has content or not', function() {
@@ -218,7 +200,7 @@ describe('controllers', function() {
   });
 
   describe('BookmarkEditCtrl', function() {
-    var scope, location, BookmarkMock, aBookmark, loadId, loadingTopic;
+    var scope, location, BookmarkMock, aBookmark, loadId;
 
     beforeEach(inject(function($rootScope, $controller) {
       scope = $rootScope.$new();
@@ -235,11 +217,9 @@ describe('controllers', function() {
       BookmarkMock.get.andCallFake(function() {
         return aBookmark;
       });
-      loadingTopic = jasmine.createSpyObj('loadingTopic', [ 'dispatch' ]);
 
       $controller('BookmarkEditCtrl', {
         $scope : scope,
-        loadingTopic : loadingTopic,
         $location : location,
         Bookmark : BookmarkMock,
         $routeParams : {
@@ -253,7 +233,6 @@ describe('controllers', function() {
     });
 
     it('should have properties as loaded', function() {
-      expect(loadingTopic.dispatch).toHaveBeenCalledWith('startLoading');
       expect(BookmarkMock.get).toHaveBeenCalledWith({
         bookmarkId : loadId
       }, jasmine.any(Function));
@@ -263,7 +242,6 @@ describe('controllers', function() {
       expect(scope.name).toBe(aBookmark.name);
       expect(scope.url).toBe(aBookmark.url);
       expect(scope.description).toBe(aBookmark.description);
-      expect(loadingTopic.dispatch).toHaveBeenCalledWith('finishLoading');
     });
 
     it('should call bookmark.$save on submit', function() {
