@@ -6,24 +6,25 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 
 .controller('BookmarksListCtrl', 
   [ '$scope', 'Bookmark', 'session', function($scope, Bookmark, session) {
+  Bookmark.listenerDisabled = false; // always enables listeners (for loading screen)
     
   $scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
   $scope.sortSelection = angular.isUndefined(session.sortSelection) ? 'name' : session.sortSelection;
 
-  var updateSortOrder = function() {
+  function updateSortOrder() {
     session.sortSelection = $scope.sortSelection;
     session.isAscendingSort = $scope.isAscendingSort;
 
     var sortPrefix = !$scope.isAscendingSort ? '-' : '';
     $scope.sortDirectionIconClass = !$scope.isAscendingSort ? 'icon-arrow-down' : 'icon-arrow-up';
     $scope.sort = sortPrefix + $scope.sortSelection;
-  }
+  };
 
   $scope.$watch('sortSelection', updateSortOrder);
   $scope.$watch('isAscendingSort', updateSortOrder);
   updateSortOrder();
 
-  var load = function() {
+  function load() {
     $scope.bookmarks = Bookmark.query({});
   };
 
@@ -31,19 +32,20 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
     bookmark.$delete({
       bookmarkId : bookmark.id
     }, load);
-  }
+  };
 
   load();
 
   $scope.hasDescription = function(bookmark) {
     return $.trim(bookmark.description).length > 0;
-  }
+  };
 } ])
 
 .controller('BookmarkAddCtrl', 
   [ '$scope', 'Bookmark', '$location', function($scope, Bookmark, $location) {
       
   $scope.action = 'Add';
+  Bookmark.listenerDisabled = true;
 
   $scope.$on('submit', function(event, bookmark) {
     console.log("received" + bookmark);
@@ -67,6 +69,11 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
     $scope.name = bookmark.name;
     $scope.url = bookmark.url;
     $scope.description = bookmark.description;
+  });
+  
+  var handle = Bookmark.addFinishListener(function (){
+    Bookmark.listenerDisabled = true;
+    Bookmark.removeFinishListener(handle); // ensure this listener only get called once.
   });
 
   $scope.$on('submit', function(event, updatedBookmark) {

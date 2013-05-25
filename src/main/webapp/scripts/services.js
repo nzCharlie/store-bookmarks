@@ -52,6 +52,7 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
     }
   });
   
+  Bookmark.listenerDisabled = false;
   var bookmarkTopic = EventDispatcher.getInstance("bookmarkTopic");
   
   var startListeners = new Listeners();
@@ -84,22 +85,25 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
       });
     }
   });
-  
-  var NotifyAdvice = function (func) {
-    var topicDispatchEvent = function (event) {
+
+  function topicDispatchEvent(event) {
+    if (!Bookmark.listenerDisabled) 
       bookmarkTopic.dispatch(event);
-    };
-    
-    var topicDispatchFinishEvent = function () {
-      topicDispatchEvent('finish');
-    };
-    
-    return function() {      
+  };
+
+  function topicDispatchFinishEvent() {
+    topicDispatchEvent('finish');
+  };
+
+  function NotifyAdvice(func) {
+    var returned = function() {
       topicDispatchEvent('start');
       var value =  func.apply(Bookmark, arguments);
       value.$then(topicDispatchFinishEvent, topicDispatchFinishEvent);
       return value;
     };
+    returned.original = func;
+    return returned;
   };
   
   Bookmark['query'] = NotifyAdvice(Bookmark['query']);

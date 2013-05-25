@@ -6,8 +6,6 @@ This is a project of my own experiment.  I would like to learn more about the ne
 Tasks
 -----
 
-- Currently there is issue where saving takes to full page loading instead of disabling the saving button.
-
 - Web site scafolding
 - Created backup services (GAE datastore, jax-rs, spring, hibernate)
 - Front end 

@@ -81,6 +81,10 @@ describe('controllers', function() {
           isAscendingSort : true
         });
       });
+      
+      it('should have set Bookmark listenerDisabled to false', function (){
+        expect(BookmarkMock.listenerDisabled).toBe(false);
+      });
 
     });
 
@@ -196,16 +200,25 @@ describe('controllers', function() {
       expect(savedRaised).toBe(true);
       expect(location.path).toHaveBeenCalledWith('/bookmarks');
     });
+    
+    it('should ensure Bookmark.listenerDisabled property is set to true', function (){
+      expect(BookmarkMock.listenerDisabled).toBe(true);
+    });
 
   });
 
   describe('BookmarkEditCtrl', function() {
-    var scope, location, BookmarkMock, aBookmark, loadId;
+    var scope, location, BookmarkMock, aBookmark, loadId, handleId;
 
     beforeEach(inject(function($rootScope, $controller) {
       scope = $rootScope.$new();
       location = jasmine.createSpyObj('location', [ 'path' ])
-      BookmarkMock = jasmine.createSpyObj('BookmarkMock', [ 'get' ]);
+      BookmarkMock = jasmine.createSpyObj('BookmarkMock', [ 'get', 'addFinishListener', 'removeFinishListener' ]);
+      handleId = 'aHandle';
+      BookmarkMock.addFinishListener.andCallFake(function (){
+        return handleId;
+      });
+      
       loadId = 1;
       aBookmark = {
         id : loadId,
@@ -275,6 +288,15 @@ describe('controllers', function() {
       expect(location.path).toHaveBeenCalledWith('/bookmarks');
     });
 
+    it('should ensure listenerDisabled property is set and the temp listener is removed', function (){
+      expect(BookmarkMock.addFinishListener).toHaveBeenCalledWith(jasmine.any(Function));
+      var listenerFunc = BookmarkMock.addFinishListener.calls[0].args[0];
+      listenerFunc();
+      
+      expect(BookmarkMock.listenerDisabled).toBe(true);
+      expect(BookmarkMock.removeFinishListener).toHaveBeenCalledWith(handleId);
+    })
+    
   });
 
   describe('BookmarkFormCtrl', function() {

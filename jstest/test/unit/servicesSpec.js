@@ -106,6 +106,27 @@ describe('service', function() {
         $httpBackend.flush();
         expect(finishListener).toHaveBeenCalled();
       });
+      
+      it('should not call listeners if listenersDisabled attribute is set', function () {
+        $httpBackend.expect('GET', '/rest/bookmarks/1').respond(bookmark);
+
+        var aBookmark = BookmarkResource.get({
+          bookmarkId : 1
+        });
+        $httpBackend.flush();
+        
+        startListener.reset();
+        finishListener.reset();
+        
+        BookmarkResource.listenerDisabled = true;
+        
+        $httpBackend.expect('POST', '/rest/bookmarks/1', angular.toJson(aBookmark)).respond(200);
+
+        aBookmark.$save({});
+        expect(startListener).not.toHaveBeenCalled();
+        $httpBackend.flush();
+        expect(finishListener).not.toHaveBeenCalled();
+      })
     });
 
     it('should be able to list bookmarks', function() {
