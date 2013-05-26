@@ -34,26 +34,26 @@
 	  
 	  <table class="table table-hover" ng-show="bookmarks.length > 0">
 	  	<tbody>
-    		<tr ng-repeat="bookmark in bookmarks | orderBy:sort">
-      			<td ng-init="isShowDetail=false">
-      				<div>
-	      				<i class="icon-bookmark"></i>
-	      				<a href="{{bookmark.url}}">
-	      					<strong>{{bookmark.name}}</strong>
-	      				</a>
-	      				<button class="btn btn-micro" ng-click="isShowDetail=!isShowDetail" ng-disabled="!hasDescription(bookmark)"><i class="icon-caret-down"></i></button>
-	      				
-	      				<span class="pull-right">
-	      					<a class="btn btn-micro btn-primary" href="#/bookmarks/edit/{{bookmark.id}}"><i class="icon-edit"></i> Edit</a>
-							|  <a class="btn btn-micro btn-danger" ng-click="deleteBookmark(bookmark)"><i class="icon-trash"> Delete</i></a>
-						</span>
-	      				<span class="clearfix"></span>
-	      			</div>
-	      			
-	      			<div class="bookmark-description-container" collapse="!isShowDetail">
-      					<pre class="bookmark-description well well-small">{{bookmark.description}}</pre>
-	      			</div>
-				</td>
+    		<tr ng-repeat="bookmark in bookmarks | orderBy:sort" ng-controller="BookmarkCtrl">
+     			<td>
+     				<div>
+      				<i class="icon-bookmark"></i>
+      				<a ng-click="openPreview(bookmark)">
+      					<strong>{{bookmark.name}}</strong>
+      				</a>
+      				<button class="btn btn-micro" ng-click="toggleShowDetail()" ng-disabled="!hasDescription()"><i class="icon-caret-down"></i></button>
+      				
+      				<span class="pull-right">
+      					<a class="btn btn-micro btn-primary" href="#/bookmarks/edit/{{bookmark.id}}"><i class="icon-edit"></i> Edit</a>
+						    |  <a class="btn btn-micro btn-danger" ng-click="deleteBookmark(bookmark)"><i class="icon-trash"> Delete</i></a>
+               </span>
+      				<span class="clearfix"></span>
+      			</div>
+      			
+      			<div class="bookmark-description-container" collapse="!isShowDetail">
+     					<pre class="bookmark-description well well-small">{{bookmark.description}}</pre>
+      			</div>
+			    </td>
 		    </tr>
 		</tbody>
 	  </table>
@@ -61,3 +61,15 @@
     </div>
   </div>
 </div>
+
+<script type="text/ng-template" id="/templates/previewDialog.html">
+              <div class="modal-header">
+                <h4>{{bookmark.name}}</h4>
+              </div>
+              <div class="modal-body">
+                <iframe ng-src="{{bookmark.url}}"></iframe>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-warning cancel" ng-click="closePreview()">Cancel</button>
+              </div>
+</script>

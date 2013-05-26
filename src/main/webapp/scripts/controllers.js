@@ -36,10 +36,43 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 
   load();
 
-  $scope.hasDescription = function(bookmark) {
-    return $.trim(bookmark.description).length > 0;
-  };
 } ])
+
+.controller('BookmarkCtrl', ['$scope', '$dialog', function ($scope, $dialog) {
+  $scope.isShowDetail = false;
+  $scope.toggleShowDetail = function () {
+    $scope.isShowDetail = !$scope.isShowDetail;
+  }
+  $scope.hasDescription = function() {
+    return $.trim($scope.bookmark.description).length > 0;
+  }
+  
+  function getBookmarkPreviewOpts(bookmark) {
+    return  {
+      backdrop: true,
+      keyboard: true,
+      backdropClick: true,
+      resolve: {
+        bookmark: function () {
+          return angular.copy(bookmark);
+        }
+      }
+    };
+  };
+  
+  $scope.openPreview = function (bookmark) {
+    var previewDialog = $dialog.dialog(getBookmarkPreviewOpts(bookmark));
+    previewDialog.open('/templates/previewDialog.html', 'BookmarkPreviewCtrl');
+  };
+  
+}])
+
+.controller('BookmarkPreviewCtrl', ['$scope', 'dialog', 'bookmark', function($scope, dialog, bookmark){
+  $scope.bookmark = bookmark;
+  $scope.closePreview = function() {
+    dialog.close();
+  };
+}])
 
 .controller('BookmarkAddCtrl', 
   [ '$scope', 'Bookmark', '$location', function($scope, Bookmark, $location) {
