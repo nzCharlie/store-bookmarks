@@ -51,7 +51,7 @@
 	      			</div>
 	      			
 	      			<div class="bookmark-description-container" collapse="!isShowDetail">
-      					<pre class="bookmark-description well well-small">{{bookmark.description}}</pre>
+      					<div class="bookmark-description well well-small" markdown>{{bookmark.description}}</div>
 	      			</div>
 				</td>
 		    </tr>

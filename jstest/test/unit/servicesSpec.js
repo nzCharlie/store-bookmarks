@@ -2,7 +2,7 @@
 
 /* jasmine specs for services go here */
 
-describe('service', function() {
+describe('bookmarksService', function() {
   beforeEach(module('bookmarksServices'));
 
   describe("Bookmark", function() {
@@ -192,6 +192,34 @@ describe('service', function() {
 
       aBookmark.$save({});
       $httpBackend.flush();
+    });
+  });
+});
+
+var Showdown; // Showdown is a globabl object that will be defined when including showdown.js
+describe('showndownService', function() {
+  var makeHtmlMock;
+  
+  beforeEach(function(){
+    Showdown = {};
+    makeHtmlMock= jasmine.createSpy('makeHtml');
+    Showdown.converter = function(){
+      this.makeHtml = makeHtmlMock;
+    };
+  });
+  
+  beforeEach(module('showndownService'));
+  
+  describe("ShowndownConverter", function() {
+    var ShowndownConverter;
+    
+    beforeEach(inject(function(_ShowndownConverter_) {
+      ShowndownConverter = _ShowndownConverter_;
+    }));
+    
+    it('should return the makeHtml function of the converter', function(){
+      ShowndownConverter();
+      expect(makeHtmlMock).toHaveBeenCalled();
     });
   });
 });

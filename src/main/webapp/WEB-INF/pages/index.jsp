@@ -96,13 +96,6 @@
       .bookmark-description-container {
         padding-top: 20px;
       }
-	  
-	  .bookmark-description {
-        color: #666666;
-        font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-        font-size: 15px;
-        line-height: 21px;
-	  }
       
       .control-group.error [class^="icon-"], .control-group.error [class*=" icon-"] {
       	color: #fff;
@@ -115,6 +108,7 @@
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
   <script src="lib/jquery.autosize-min.js"></script>
   <script src="lib/angularjs.messaging-services.min.js"></script>
+  <script src="lib/showdown.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers.js"></script>
   <script src="scripts/services.js"></script>

@@ -38,12 +38,12 @@ describe('directives', function() {
   });
 
   describe('menuCtrl', function() {
-    var scope, controllerUnderTest;
+    var scope;
 
     beforeEach(inject(function($rootScope, $controller) {
       scope = $rootScope.$new();
 
-      controllerUnderTest = $controller('menuCtrl', {
+      $controller('menuCtrl', {
         $scope : scope
       });
     }));
@@ -190,6 +190,26 @@ describe('directives', function() {
       listenerFunc('finishLoading');
       expect(scope.isLoading).toBe(true);
     });
-
+  });
+  
+  describe('markdownLink', function() {
+    var scope, element, ShowndownConverterMock;
+    
+    beforeEach(inject(function($rootScope) {
+      scope = $rootScope.$new();
+      element = angular.element('<div markdown></div>');
+      ShowndownConverterMock = jasmine.createSpy('ShowndownConverter');
+      
+      markdownLink(scope, element, ShowndownConverterMock);
+    }));
+    
+    it ('it should be watch element.html() and then calls ShowdownConverter', function (){
+      var textValue = 'blah';
+      
+      scope.$apply(function () {
+        element.html(textValue);
+      });
+      expect(ShowndownConverterMock).toHaveBeenCalledWith(textValue);
+    });
   });
 });

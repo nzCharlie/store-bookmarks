@@ -121,3 +121,9 @@ angular.module('sessionService', [])
   var session = {};
   return session;
 });
+
+angular.module('showndownService', [])
+.factory('ShowndownConverter', function(){
+  var showndownConverter = new Showdown.converter();
+  return showndownConverter.makeHtml;
+});

@@ -1,20 +1,20 @@
 'use strict';
 
-var autoGrowLink = function($scope, $element, $attrs) {
+function autoGrowLink($scope, $element, $attrs) {
 	$element.autosize();
 	var update = function() {
 		$element.trigger('autosize');
-	}
+	};
 	$scope.$watch($attrs.ngModel, update);
-}
+};
 autoGrowLink.$inject = [ '$scope', '$element', '$attrs' ];
 
-var menuCtrl = function($scope) {
+function menuCtrl($scope) {
 	$scope.isCollapsed = true;
-}
+};
 menuCtrl.$inject = [ '$scope' ];
 
-var navCtrl = function($scope, $element, $attrs, $transclude, $location) {
+function navCtrl($scope, $element, $attrs, $transclude, $location) {
 	var matchExp = $attrs.matchExp;
 	if (!angular.isDefined($attrs.matchExp)) {
 		matchExp = $attrs.href;
@@ -24,14 +24,14 @@ var navCtrl = function($scope, $element, $attrs, $transclude, $location) {
 	$scope.isActiveRoute = function() {
 		return $location.path().match($scope.matchRe);
 	};
-}
+};
 navCtrl.$inject = [ '$scope', '$element', '$attrs', '$transclude', '$location' ];
 
 angular.module('ui.directives', [ 'ui.bootstrap' ])
 
 .directive('autoGrow', function() {
 	return {
-		restrict : 'A',
+		restrict : 'AC',
 		require : 'ngModel',
 		link : autoGrowLink
 	};
@@ -39,7 +39,7 @@ angular.module('ui.directives', [ 'ui.bootstrap' ])
 
 .directive('menu', function() {
 	return {
-		restrict : 'E',
+		restrict : 'EC',
 		transclude : true,
 		scope : {
 			brand : '@'
@@ -53,7 +53,7 @@ angular.module('ui.directives', [ 'ui.bootstrap' ])
 .directive('nav', function() {
 	return {
 		require : '^menu',
-		restrict : 'E',
+		restrict : 'EC',
 		scope : {
 			title : '@',
 			iconClass : '@',
@@ -69,7 +69,7 @@ angular.module('ui.directives', [ 'ui.bootstrap' ])
  * Loader directive
  */
 
-var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingTopic) {
+function loadContainerCtrl($scope, $element, $attrs, $transclude, loadingTopic) {
 	$scope.count = 0;
 	$scope.isLoading = false;
 
@@ -82,7 +82,8 @@ var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingT
 		}
 		$scope.isLoading = $scope.count > 0;
 	});
-}
+};
+
 loadContainerCtrl.$inject = [ '$scope', '$element', '$attrs', '$transclude', 'loadingTopic' ];
 
 angular.module('loader.directives', [ 'messaging' ])
@@ -93,11 +94,30 @@ angular.module('loader.directives', [ 'messaging' ])
 
 .directive('loadContainer', function() {
 	return {
-		restrict : 'E',
+		restrict : 'EC',
 		transclude : true,
 		scope : true,
 		templateUrl : '/scripts/templates/load-container.html',
 		controller : loadContainerCtrl,
 		replace : true
 	};
-})
+});
+
+function markdownLink($scope, $element, ShowndownConverter) {
+  $scope.$watch(function() {
+    return $element.html();
+  }, function(){
+    $element.html(ShowndownConverter($element.html()));        
+  });
+};
+
+angular.module('markdown.directives', [ 'showndownService' ])
+
+.directive('markdown', ['ShowndownConverter', function (ShowndownConverter){
+  return {
+    restrict : 'AC',
+    link: function ($scope, $element, $attrs) {
+      markdownLink($scope, $element, ShowndownConverter);
+    }
+  };
+}]);
