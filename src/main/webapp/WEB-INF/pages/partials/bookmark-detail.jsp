@@ -36,6 +36,7 @@
     		<div class="controls">
     			<div class="input-prepend">
     				<span class="add-on"><i class="icon-edit"></i></span>
+    				<!-- TODO add markdown favoured editor -->
 					<textarea name="description" class="input-xxlarge"
 						ng-model="description" placeholder="Note for the bookmark" rows="1"
 						auto-grow></textarea>

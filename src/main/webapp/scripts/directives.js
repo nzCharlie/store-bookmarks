@@ -1,98 +1,123 @@
 'use strict';
 
-var autoGrowLink = function($scope, $element, $attrs) {   	
-  $element.autosize();
-  var update = function() {
-    $element.trigger('autosize');
-  }
-  $scope.$watch($attrs.ngModel, update);
-} 
-autoGrowLink.$inject = ['$scope', '$element', '$attrs'];
+function autoGrowLink($scope, $element, $attrs) {
+	$element.autosize();
+	var update = function() {
+		$element.trigger('autosize');
+	};
+	$scope.$watch($attrs.ngModel, update);
+};
+autoGrowLink.$inject = [ '$scope', '$element', '$attrs' ];
 
-var menuCtrl = function($scope) {
-  $scope.isCollapsed = true;
-}
-menuCtrl.$inject = ['$scope'];
+function menuCtrl($scope) {
+	$scope.isCollapsed = true;
+};
+menuCtrl.$inject = [ '$scope' ];
 
-var navCtrl = function($scope, $element, $attrs, $transclude, $location) {
-  var matchExp = $attrs.matchExp;
-  if (!angular.isDefined($attrs.matchExp)) {
-	  matchExp = $attrs.href;
-  }
-  $scope.matchRe = new RegExp(matchExp);
-	
-  $scope.isActiveRoute = function() {
-	return $location.path().match($scope.matchRe);
-  };
-}
-navCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', '$location'];
+function navCtrl($scope, $element, $attrs, $transclude, $location) {
+	var matchExp = $attrs.matchExp;
+	if (!angular.isDefined($attrs.matchExp)) {
+		matchExp = $attrs.href;
+	}
+	$scope.matchRe = new RegExp(matchExp);
 
-angular.module('ui.directives', ['ui.bootstrap'])
+	$scope.isActiveRoute = function() {
+		return $location.path().match($scope.matchRe);
+	};
+};
+navCtrl.$inject = [ '$scope', '$element', '$attrs', '$transclude', '$location' ];
+
+angular.module('ui.directives', [ 'ui.bootstrap' ])
 
 .directive('autoGrow', function() {
-  return {
-    restrict: 'A',
-    require: 'ngModel',
-    link: autoGrowLink
-  };
+	return {
+		restrict : 'AC',
+		require : 'ngModel',
+		link : autoGrowLink
+	};
 })
 
 .directive('menu', function() {
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: {brand: '@'},
-    controller: menuCtrl,
-    templateUrl: '/scripts/templates/menu.html',
-    replace: true
-  };
+	return {
+		restrict : 'EC',
+		transclude : true,
+		scope : {
+			brand : '@'
+		},
+		controller : menuCtrl,
+		templateUrl : '/scripts/templates/menu.html',
+		replace : true
+	};
 })
 
 .directive('nav', function() {
-  return {
-    require: '^menu',
-    restrict: 'E',
-    scope: { 
-      title: '@',
-      iconClass: '@',
-      href: '@'
-    },
-    templateUrl: '/scripts/templates/nav.html',
-    controller: navCtrl,
-    replace: true
-  };
+	return {
+		require : '^menu',
+		restrict : 'EC',
+		scope : {
+			title : '@',
+			iconClass : '@',
+			href : '@'
+		},
+		templateUrl : '/scripts/templates/nav.html',
+		controller : navCtrl,
+		replace : true
+	};
 });
 
 /**
  * Loader directive
  */
 
-var loadContainerCtrl = function($scope, $element, $attrs, $transclude, loadingTopic) {
-  $scope.isLoading = false;
-  loadingTopic.addListener(function (event) {
-	 if (event == 'startLoading') {
-		 $scope.isLoading = true;
-	 }
-	 else if (event == 'finishLoading') {
-		 $scope.isLoading = false;
-	 }
+function loadContainerCtrl($scope, $element, $attrs, $transclude, loadingTopic) {
+	$scope.count = 0;
+	$scope.isLoading = false;
+
+	loadingTopic.addListener(function(event) {
+		if (event == 'startLoading') {
+			$scope.count++;
+		} else if (event == 'finishLoading') {
+			if ($scope.count > 0)
+				$scope.count--;
+		}
+		$scope.isLoading = $scope.count > 0;
+	});
+};
+
+loadContainerCtrl.$inject = [ '$scope', '$element', '$attrs', '$transclude', 'loadingTopic' ];
+
+angular.module('loader.directives', [ 'messaging' ])
+
+.factory('loadingTopic', [ 'EventDispatcher', function(EventDispatcher) {
+	return EventDispatcher.getInstance("loadingTopic");
+} ])
+
+.directive('loadContainer', function() {
+	return {
+		restrict : 'EC',
+		transclude : true,
+		scope : true,
+		templateUrl : '/scripts/templates/load-container.html',
+		controller : loadContainerCtrl,
+		replace : true
+	};
+});
+
+function markdownLink($scope, $element, ShowndownConverter) {
+  $scope.$watch(function() {
+    return $element.html();
+  }, function(){
+    $element.html(ShowndownConverter($element.html()));        
   });
-}
-loadContainerCtrl.$inject = ['$scope', '$element', '$attrs', '$transclude', 'loadingTopic'];
+};
 
-angular.module('loader.directives', ['messaging'])
+angular.module('markdown.directives', [ 'showndownService' ])
 
-.factory('loadingTopic', ['EventDispatcher', function(EventDispatcher){
-  return EventDispatcher.getInstance("loadingTopic");
-}])
-
-.directive('loadContainer', function(){
+.directive('markdown', ['ShowndownConverter', function (ShowndownConverter){
   return {
-    restrict: 'E',
-    transclude: true,
-    scope: true,
-    templateUrl: '/scripts/templates/load-container.html',
-    controller: loadContainerCtrl,
-    replace: true
+    restrict : 'AC',
+    link: function ($scope, $element, $attrs) {
+      markdownLink($scope, $element, ShowndownConverter);
+    }
   };
-})
+}]);
