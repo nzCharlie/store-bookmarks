@@ -15,11 +15,12 @@ Tasks
     - Edit a bookmark
     - Delete a bookmark
     - Show description
+    - Added markdown support in the description
 - Todos
     - tags
     - user support
     - security
     - local storage
     - prettier interface
-    - rich text editor for description input
+    - markdown favoured editor for description input
     - more tests
