@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bookmarks.services.rest;
+package com.bookmarks.services.rest.impl;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

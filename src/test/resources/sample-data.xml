@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="bookmark">
+        <column>id</column>
+        <column>name</column>
+        <column>url</column>
+        <column>description</column>
+        <column>created</column>
+        <column>updated</column>
+        <row>
+            <value description="id">-1</value>
+            <value description="name">first</value>
+            <value description="url"><![CDATA[http://www.first.com]]></value>
+            <value description="description"><![CDATA[This is the first one.]]></value>
+            <value description="created"><![CDATA[2013-05-28 00:00:00.000]]></value>
+            <value description="updated"><![CDATA[2013-05-28 01:00:00.000]]></value>
+        </row>
+        <row>
+            <value description="id">-2</value>
+            <value description="name">second</value>
+            <value description="url"><![CDATA[http://www.second.com]]></value>
+            <value description="description"><![CDATA[This is the second one.]]></value>
+            <value description="created"><![CDATA[2013-05-28 00:00:00.000]]></value>
+            <value description="updated"><![CDATA[2013-05-28 01:00:00.000]]></value>
+        </row>
+    </table>
+</dataset>

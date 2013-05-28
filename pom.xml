@@ -43,6 +43,88 @@
 					</excludes>
 				</configuration>
 			</plugin>
+      <plugin>
+       <groupId>org.codehaus.mojo</groupId>
+       <artifactId>dbunit-maven-plugin</artifactId>
+       <version>1.0-beta-3</version>
+       <configuration>
+           <dataTypeFactoryName>${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
+           <driver>${jdbc.driverClassName}</driver>
+           <username>${jdbc.username}</username>
+           <password>${jdbc.password}</password>
+           <url>${jdbc.url}</url>
+           <schema>${dbunit.schema}</schema>
+           <skip>${skipTests}</skip>
+           <transaction>true</transaction>
+       </configuration>
+       <executions>
+           <execution>
+               <id>test-compile</id>
+               <phase>test-compile</phase>
+               <goals>
+                   <goal>operation</goal>
+               </goals>
+               <configuration>
+                <type>${dbunit.operation.type}</type>
+                <src>src/test/resources/sample-data.xml</src>
+              </configuration>
+           </execution>
+           <execution>
+               <!-- Runs before integration tests and jetty:run -->
+               <id>test</id>
+               <phase>test</phase>
+               <goals>
+                   <goal>operation</goal>
+               </goals>
+               <configuration>
+                <type>${dbunit.operation.type}</type>
+                <src>src/test/resources/sample-data.xml</src>
+              </configuration>
+           </execution>
+       </executions>
+       <dependencies>
+           <dependency>
+               <groupId>${jdbc.groupId}</groupId>
+               <artifactId>${jdbc.artifactId}</artifactId>
+               <version>${jdbc.version}</version>
+           </dependency>
+       </dependencies>
+      </plugin>
+      <plugin>
+	      <groupId>org.codehaus.mojo</groupId>
+	      <artifactId>hibernate3-maven-plugin</artifactId>
+	      <version>2.2</version>
+	      <configuration>
+	        <components>
+            <component>
+	            <name>hbm2ddl</name>
+	            <implementation>annotationconfiguration</implementation>
+	          </component>
+	        </components>
+	        <componentProperties>
+	          <drop>true</drop>
+	          <jdk5>true</jdk5>
+	            <propertyfile>src/test/resources/jdbc.properties</propertyfile>
+	            <skip>${skipTests}</skip>
+	        </componentProperties>
+	      </configuration>
+	      <executions>
+	          <execution>
+	              <phase>process-test-resources</phase>
+	              <goals>
+	                  <goal>hbm2ddl</goal>
+	              </goals>
+	          </execution>
+	      </executions>
+	      <dependencies>
+	          <dependency>
+	              <groupId>${jdbc.groupId}</groupId>
+	              <artifactId>${jdbc.artifactId}</artifactId>
+	              <version>${jdbc.version}</version>
+	          </dependency>
+	      </dependencies>
+      </plugin>
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.4</version>
@@ -131,6 +213,28 @@
                                         <execute />
                                     </action>
                                 </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>dbunit-maven-plugin</artifactId>
+                                        <versionRange>[1.0-beta-3,)</versionRange>
+                                        <goals><goal>operation</goal></goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>hibernate3-maven-plugin</artifactId>
+                                        <versionRange>[2.2,)</versionRange>
+                                        <goals><goal>hbm2ddl</goal></goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
@@ -170,9 +274,9 @@
 			</testResource>
 		</testResources>
 		<!-- Read the contents of the file below to see how to change databases -->
-		<!-- <filters> -->
-		<!-- <filter>src/main/resources/jdbc.properties</filter> -->
-		<!-- </filters> -->
+		<!--filters>
+		  <filter>src/main/resources/jdbc.properties</filter>
+		</filters-->
 		<finalName>Bookmarks</finalName>
 	</build>
 
@@ -326,8 +430,8 @@
             <version>${joda.time.version}</version>
         </dependency>
 		
-		<!-- Jetty runner -->
-		<dependency>
+        <!-- Jetty runner -->
+		    <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>${jetty.version}</version>
@@ -340,9 +444,9 @@
         
         <!-- postgresql -->
         <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
+            <groupId>${jdbc.groupId}</groupId>
+            <artifactId>${jdbc.artifactId}</artifactId>
+            <version>${jdbc.version}</version>
             <classifier/>
         </dependency>
         
@@ -410,6 +514,16 @@
 	</dependencies>
 
 	<properties>
+	  <dbunit.dataTypeFactoryName>org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</dbunit.dataTypeFactoryName>
+    <jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
+    <jdbc.username>dbunit</jdbc.username>
+    <jdbc.password>dbunit</jdbc.password>
+    <jdbc.url>jdbc:postgresql://localhost:5432/dbunit</jdbc.url>
+    <dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
+    <jdbc.groupId>postgresql</jdbc.groupId>
+    <jdbc.artifactId>postgresql</jdbc.artifactId>
+    <jdbc.version>8.4-702.jdbc3</jdbc.version>
+    
 		<skipTests>${maven.test.skip}</skipTests>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.host>0.0.0.0</jetty.host>
@@ -423,7 +537,6 @@
 		<mockito.version>1.9.5</mockito.version>
 		<spring.version>3.2.0.RELEASE</spring.version>
 		<joda.time.version>1.6</joda.time.version>
-		<postgresql.version>8.4-702.jdbc3</postgresql.version>
 		<hibernate.version>3.6.4.Final</hibernate.version>
 	</properties>
 </project>
