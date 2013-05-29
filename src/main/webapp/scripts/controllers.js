@@ -44,7 +44,7 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 } ])
 
 .controller('BookmarkAddCtrl', 
-  [ '$scope', 'Bookmark', '$location', function($scope, Bookmark, $location) {
+  [ '$scope', 'Bookmark', 'HomeRedirectService', function($scope, Bookmark, HomeRedirectService) {
       
   $scope.action = 'Add';
   Bookmark.listenerDisabled = true;
@@ -56,17 +56,15 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 
     Bookmark.create(bookmark, function() {
       $scope.$broadcast('saved');
-      $location.path('/bookmarks');
+      HomeRedirectService();
     });
   });
   
-  $scope.$on('canceled', function() {
-    $location.path('/bookmarks');
-  });
+  $scope.$on('canceled', HomeRedirectService);
 } ])
 
 .controller('BookmarkEditCtrl', 
-  [ '$scope', 'Bookmark', '$routeParams', '$location', function($scope, Bookmark, $routeParams, $location) {
+  [ '$scope', 'Bookmark', '$routeParams', 'HomeRedirectService', function($scope, Bookmark, $routeParams, HomeRedirectService) {
   $scope.action = 'Edit';
 
   var bookmark = Bookmark.get({
@@ -96,13 +94,11 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
       bookmarkId : ''
     }, function() {
       $scope.$broadcast('saved');
-      $location.path('/bookmarks');
+      HomeRedirectService();
     });
   });
   
-  $scope.$on('canceled', function() {
-    $location.path('/bookmarks');   
-  });
+  $scope.$on('canceled', HomeRedirectService);
 } ])
 
 .controller('BookmarkFormCtrl', 

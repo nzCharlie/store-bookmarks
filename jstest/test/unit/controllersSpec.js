@@ -162,16 +162,16 @@ describe('controllers', function() {
   });
 
   describe('BookmarkAddCtrl', function() {
-    var scope, location, BookmarkMock;
+    var scope, HomeRedirectServiceMock, BookmarkMock;
 
     beforeEach(inject(function($rootScope, $controller) {
       scope = $rootScope.$new();
-      location = jasmine.createSpyObj('location', [ 'path' ])
       BookmarkMock = jasmine.createSpyObj('Bookmark', [ 'create' ]);
+      HomeRedirectServiceMock = jasmine.createSpy('HomeRedirectService');
 
       $controller('BookmarkAddCtrl', {
         $scope : scope,
-        $location : location,
+        HomeRedirectService : HomeRedirectServiceMock,
         Bookmark : BookmarkMock
       });
     }));
@@ -198,31 +198,32 @@ describe('controllers', function() {
       var savedFunc = BookmarkMock.create.argsForCall[0][1];
       savedFunc();
       expect(savedRaised).toBe(true);
-      expect(location.path).toHaveBeenCalledWith('/bookmarks');
+      expect(HomeRedirectServiceMock).toHaveBeenCalled();
     });
     
     it('should ensure Bookmark.listenerDisabled property is set to true', function (){
       expect(BookmarkMock.listenerDisabled).toBe(true);
     });
 
-    expect('should update location when cancelled', function (){     
-      scope.$parent.$broadcast('cancelling');
-      expect(location.path).toHaveBeenCalledWith('/bookmarks');
+    expect('should update location when cancelled', function (){
+      var childScope = scope.$new();
+      childScope.$emit('cancelling');
+      expect(HomeRedirectServiceMock).toHaveBeenCalled();
     });
     
   });
 
   describe('BookmarkEditCtrl', function() {
-    var scope, location, BookmarkMock, aBookmark, loadId, handleId;
+    var scope, HomeRedirectServiceMock, BookmarkMock, aBookmark, loadId, handleId;
 
     beforeEach(inject(function($rootScope, $controller) {
       scope = $rootScope.$new();
-      location = jasmine.createSpyObj('location', [ 'path' ])
       BookmarkMock = jasmine.createSpyObj('BookmarkMock', [ 'get', 'addFinishListener', 'removeFinishListener' ]);
       handleId = 'aHandle';
       BookmarkMock.addFinishListener.andCallFake(function (){
         return handleId;
       });
+      HomeRedirectServiceMock = jasmine.createSpy('HomeRedirectService');
       
       loadId = 1;
       aBookmark = {
@@ -238,7 +239,7 @@ describe('controllers', function() {
 
       $controller('BookmarkEditCtrl', {
         $scope : scope,
-        $location : location,
+        HomeRedirectService : HomeRedirectServiceMock,
         Bookmark : BookmarkMock,
         $routeParams : {
           bookmarkId : loadId
@@ -290,7 +291,7 @@ describe('controllers', function() {
       var savedFunc = aBookmark.$save.argsForCall[0][1];
       savedFunc();
       expect(savedRaised).toBe(true);
-      expect(location.path).toHaveBeenCalledWith('/bookmarks');
+      expect(HomeRedirectServiceMock).toHaveBeenCalled();
     });
 
     it('should ensure listenerDisabled property is set and the temp listener is removed', function (){
@@ -304,7 +305,7 @@ describe('controllers', function() {
     
     expect('should update location when cancelled', function (){     
       scope.$parent.$broadcast('cancelling');
-      expect(location.path).toHaveBeenCalledWith('/bookmarks');
+      expect(HomeRedirectServiceMock).toHaveBeenCalled();
     });
     
   });

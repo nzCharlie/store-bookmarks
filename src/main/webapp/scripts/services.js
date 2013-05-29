@@ -114,7 +114,13 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
   Bookmark['delete'] = NotifyAdvice(Bookmark['delete']);
   
   return Bookmark;
-} ]);
+} ])
+
+.factory('HomeRedirectService', ['$location', function ($location){
+  return function () {
+    $location.path('/bookmarks');
+  };
+}]);
 
 angular.module('sessionService', [])
 .factory('session', function() {

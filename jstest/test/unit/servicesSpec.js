@@ -194,6 +194,25 @@ describe('bookmarksService', function() {
       $httpBackend.flush();
     });
   });
+  
+  describe('HomeRedirectService', function() {
+    var pathSpy;
+    
+    beforeEach(inject(function($location, HomeRedirectService) {
+      spyOn($location, 'path').andCallFake(function() {
+        // do nothing;
+      });
+      
+      pathSpy = $location.path;
+      
+      HomeRedirectService();
+    }));
+    
+    it('should set path to /bookmarks', function() {
+      expect(pathSpy).toHaveBeenCalledWith('/bookmarks');
+    });
+  });
+  
 });
 
 var Showdown; // Showdown is a globabl object that will be defined when including showdown.js
