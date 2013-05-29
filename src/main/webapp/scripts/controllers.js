@@ -5,7 +5,7 @@
 angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives' ])
 
 .controller('BookmarksListCtrl', 
-  [ '$scope', 'Bookmark', 'session', function($scope, Bookmark, session) {
+  [ '$scope', 'Bookmark', 'session', '$route',  function($scope, Bookmark, session, $route) {
   Bookmark.listenerDisabled = false; // always enables listeners (for loading screen)
     
   $scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
@@ -39,6 +39,8 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   $scope.hasDescription = function(bookmark) {
     return $.trim(bookmark.description).length > 0;
   };
+  
+  
 } ])
 
 .controller('BookmarkAddCtrl', 
@@ -56,6 +58,10 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
       $scope.$broadcast('saved');
       $location.path('/bookmarks');
     });
+  });
+  
+  $scope.$on('canceled', function() {
+    $location.path('/bookmarks');
   });
 } ])
 
@@ -93,6 +99,10 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
       $location.path('/bookmarks');
     });
   });
+  
+  $scope.$on('canceled', function() {
+    $location.path('/bookmarks');   
+  });
 } ])
 
 .controller('BookmarkFormCtrl', 
@@ -104,11 +114,15 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
     "name" : $.trim($scope.name),
     "url" : $scope.url,
     "description" : $.trim($scope.description)
-    }
+    };
     console.log(bookmark);
 
     $scope.$emit('submit', bookmark);
     console.log("submit" + bookmark);
+  };
+  
+  $scope.canceling = function () {
+    $scope.$emit('canceled');
   };
 
   $scope.$on('saving', function() {

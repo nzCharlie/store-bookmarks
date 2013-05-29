@@ -205,6 +205,11 @@ describe('controllers', function() {
       expect(BookmarkMock.listenerDisabled).toBe(true);
     });
 
+    expect('should update location when cancelled', function (){     
+      scope.$parent.$broadcast('cancelling');
+      expect(location.path).toHaveBeenCalledWith('/bookmarks');
+    });
+    
   });
 
   describe('BookmarkEditCtrl', function() {
@@ -295,7 +300,12 @@ describe('controllers', function() {
       
       expect(BookmarkMock.listenerDisabled).toBe(true);
       expect(BookmarkMock.removeFinishListener).toHaveBeenCalledWith(handleId);
-    })
+    });
+    
+    expect('should update location when cancelled', function (){     
+      scope.$parent.$broadcast('cancelling');
+      expect(location.path).toHaveBeenCalledWith('/bookmarks');
+    });
     
   });
 
@@ -385,6 +395,18 @@ describe('controllers', function() {
       scope.description = '   ';
       scope.submit();
       expect(actualBookmark.description).toEqual('');
+    });
+    
+    it("should have raised canceled event when canceling", function() {
+      var raised = false;
+      
+      scope.$parent.$on('canceled', function() {
+        raised = true;
+      });
+      
+      scope.canceling();
+      
+      expect(raised).toBe(true);
     });
 
   });
