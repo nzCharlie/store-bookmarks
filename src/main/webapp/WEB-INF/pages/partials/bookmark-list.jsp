@@ -2,7 +2,7 @@
   <div class="page-header row-fluid">
     <h1 class="span5">
     		Bookmarks 
-    		<a class="btn btn-mini btn-primary" href="#/bookmarks/add" ><i class="icon-bookmark-empty"></i> Add</a>
+    		<a class="btn btn-mini btn-primary" ng-click="addBookmark()" ><i class="icon-bookmark-empty"></i> Add</a>
 	</h1>
 	<div class="pull-right" id="sort-buttons">
 		<div class="well well-small">
@@ -29,7 +29,7 @@
 
 	  <p ng-hide="bookmarks.length > 0">
 	  Looks like you have have any bookmark saved. 
-	  Do you want to <a class="btn btn-mini btn-primary" href="#/bookmarks/add"><i class="icon-bookmark-empty"></i> Add</a> one?
+	  Do you want to <a class="btn btn-mini btn-primary" ng-click="addBookmark()"><i class="icon-bookmark-empty"></i> Add</a> one?
 	  </p>
 	  
 	  <table class="table table-hover" ng-show="bookmarks.length > 0">
@@ -44,7 +44,7 @@
 	      				<button class="btn btn-micro" ng-click="isShowDetail=!isShowDetail" ng-disabled="!hasDescription(bookmark)"><i class="icon-caret-down"></i></button>
 	      				
 	      				<span class="pull-right">
-	      					<a class="btn btn-micro btn-primary" href="#/bookmarks/edit/{{bookmark.id}}"><i class="icon-edit"></i> Edit</a>
+	      					<a class="btn btn-micro btn-primary" ng-click="editBookmark(bookmark.id)"><i class="icon-edit"></i> Edit</a>
 							|  <a class="btn btn-micro btn-danger" ng-click="deleteBookmark(bookmark)"><i class="icon-trash"> Delete</i></a>
 						</span>
 	      				<span class="clearfix"></span>

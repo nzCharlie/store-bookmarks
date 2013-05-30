@@ -64,6 +64,7 @@
         top: 50%;
         left: 50%;
         text-align: center;
+        z-index: 1100;
       }
       
       #mainLoading .loading {
@@ -95,6 +96,15 @@
       
       .bookmark-description-container {
         padding-top: 20px;
+      }
+      
+      .modal {
+        width: 850px;
+        margin-left: -425px;
+      }
+      
+      .auto-width {
+        width: inherit;
       }
       
       .control-group.error [class^="icon-"], .control-group.error [class*=" icon-"] {

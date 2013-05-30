@@ -3,5 +3,5 @@
 		<h1>{{action}}</h1>
 	</div>
 
-	<ng-include src="'/partials/bookmark-edit-form'"></ng-include>
+	<div ng-init="isModal=false" ng-include="'/partials/bookmark-edit-form'"></div>
 </div>

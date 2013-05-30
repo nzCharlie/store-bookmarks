@@ -100,6 +100,7 @@
     
     <mvc:view-controller path="partials/bookmark-list" view-name="partials/bookmark-list" />
     <mvc:view-controller path="partials/bookmark-detail" view-name="partials/bookmark-detail" />
+    <mvc:view-controller path="partials/bookmark-detail-modal" view-name="partials/bookmark-detail-modal" />
     <mvc:view-controller path="partials/bookmark-edit-form" view-name="partials/bookmark-edit-form" />
     <mvc:view-controller path="partials/about" view-name="partials/about" />
  

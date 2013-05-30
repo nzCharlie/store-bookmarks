@@ -5,7 +5,7 @@
 angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives' ])
 
 .controller('BookmarksListCtrl', 
-  [ '$scope', 'Bookmark', 'session', '$route',  function($scope, Bookmark, session, $route) {
+  [ '$scope', 'Bookmark', 'session', '$dialog', '$location',  function($scope, Bookmark, session, $dialog, $location) {
   Bookmark.listenerDisabled = false; // always enables listeners (for loading screen)
     
   $scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
@@ -39,15 +39,80 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   $scope.hasDescription = function(bookmark) {
     return $.trim(bookmark.description).length > 0;
   };
+
+  $scope.addBookmark = function () {
+    if ($(window).width() >= 767 ) {
+      openModal('Add');
+    }
+    else {
+      $location.path('/bookmarks/add');
+    }
+  };
   
+  $scope.editBookmark = function (id) {
+    if ($(window).width() >= 767 ) {
+      openModal('Edit', id);
+    }
+    else {
+      $location.path('/bookmarks/edit/' + id);
+    }
+  };
+
+  
+  var opts = {
+      backdrop: true,
+      keyboard: true,
+      backdropClick: false,
+  };
+  function openModal(action, id) {
+    opts.resolve = {
+        'action' : function () { return action; },
+        'bookmark': function () { 
+          if (action == 'Edit') {
+            var bookmark = Bookmark.get({
+              bookmarkId : id
+            });
+            return bookmark;
+          }
+        }
+    };
+    var dialog = $dialog.dialog(opts);
+    dialog.open('/partials/bookmark-detail-modal', 'BookmarkDetailModalCtrl');
+  };
   
 } ])
+
+.controller('BookmarkDetailModalCtrl', ['$scope', 'dialog', 'action', 'bookmark', function($scope, dialog, action, bookmark){
+  $scope.action = action;
+  $scope.isReady = false;
+  
+  if (action == 'Edit') {
+    bookmark.$then(function () {
+      $scope.name = bookmark.name;
+      $scope.url = bookmark.url;
+      $scope.description = bookmark.description;
+      
+      $scope.isReady = true;
+    });
+  }
+  else {
+    $scope.isReady = true;    
+  }
+
+  $scope.$on('submit', function (event, bookmark){
+    dialog.close(bookmark);
+  });
+  $scope.$on('canceled', function (event){
+    dialog.close();
+  });
+}])
 
 .controller('BookmarkAddCtrl', 
   [ '$scope', 'Bookmark', 'HomeRedirectService', function($scope, Bookmark, HomeRedirectService) {
       
   $scope.action = 'Add';
   Bookmark.listenerDisabled = true;
+  $scope.isReady = true;
 
   $scope.$on('submit', function(event, bookmark) {
     console.log("received" + bookmark);
@@ -65,7 +130,9 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 
 .controller('BookmarkEditCtrl', 
   [ '$scope', 'Bookmark', '$routeParams', 'HomeRedirectService', function($scope, Bookmark, $routeParams, HomeRedirectService) {
+    
   $scope.action = 'Edit';
+  $scope.isReady = false;
 
   var bookmark = Bookmark.get({
     bookmarkId : $routeParams.bookmarkId
@@ -73,6 +140,8 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
     $scope.name = bookmark.name;
     $scope.url = bookmark.url;
     $scope.description = bookmark.description;
+    
+    $scope.isReady = true;
   });
   
   var handle = Bookmark.addFinishListener(function (){
@@ -104,7 +173,7 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 .controller('BookmarkFormCtrl', 
   [ '$scope', function($scope) {
   $scope.isSaving = false;
-
+  
   $scope.submit = function() {
     var bookmark = {
     "name" : $.trim($scope.name),

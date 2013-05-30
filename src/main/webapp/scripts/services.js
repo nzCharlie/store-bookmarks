@@ -33,6 +33,7 @@ var Listeners = function () {
 };
 
 angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
+
 .factory('Bookmark', 
     [ '$resource', 'EventDispatcher',  function($resource, EventDispatcher) {
       
