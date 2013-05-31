@@ -134,3 +134,18 @@ angular.module('showndownService', [])
   var showndownConverter = new Showdown.converter();
   return showndownConverter.makeHtml;
 });
+
+angular.module('modalWindowDecisionService', []) 
+.provider('showModalWindow', function showModalWindowProvider(){
+  var maxModalWidth = 750;
+  
+  this.setMaxModalWidth = function (maxModalWidthToSet) {
+    maxModalWidth = maxModalWidthToSet;
+  };
+  
+  this.$get = function () {
+    return function () {
+      return $(window).width() >= maxModalWidth;
+    };
+  }
+});

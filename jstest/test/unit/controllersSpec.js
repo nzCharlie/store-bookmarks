@@ -6,7 +6,7 @@ describe('controllers', function() {
   beforeEach(module('bookmarksCtrl'));
 
   describe('BookmarksListCtrl', function() {
-    var scope, session, BookmarkMock;
+    var scope, session, BookmarkMock, showModalWindowMock;
 
     beforeEach(function() {
       this.addMatchers({
@@ -48,6 +48,10 @@ describe('controllers', function() {
       BookmarkMock.query.andCallFake(function() {
         return 'Bookmark.query called';
       });
+      showModalWindowMock = jasmine.createSpy('showModalWindow');
+      showModalWindowMock.andCallFake(function () {
+        return true;
+      });
 
       session = {
         isAscendingSort : false,
@@ -57,7 +61,8 @@ describe('controllers', function() {
       $controller('BookmarksListCtrl', {
         $scope : scope,
         Bookmark : BookmarkMock,
-        session : session
+        session : session,
+        showModalWindow: showModalWindowMock
       });
     }));
 

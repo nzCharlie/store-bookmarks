@@ -2,10 +2,10 @@
 
 /* Controllers */
 
-angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives' ])
+angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'modalWindowDecisionService' ])
 
 .controller('BookmarksListCtrl', 
-  [ '$scope', 'Bookmark', 'session', '$dialog', '$location',  function($scope, Bookmark, session, $dialog, $location) {
+  [ '$scope', 'Bookmark', 'session', '$dialog', '$location', 'showModalWindow',  function($scope, Bookmark, session, $dialog, $location, showModalWindow) {
   Bookmark.listenerDisabled = false; // always enables listeners (for loading screen)
     
   $scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
@@ -41,7 +41,7 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   };
 
   $scope.addBookmark = function () {
-    if ($(window).width() >= 767 ) {
+    if (showModalWindow()) {
       openModal('Add');
     }
     else {
@@ -50,14 +50,13 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   };
   
   $scope.editBookmark = function (id) {
-    if ($(window).width() >= 767 ) {
+    if (showModalWindow()) {
       openModal('Edit', id);
     }
     else {
       $location.path('/bookmarks/edit/' + id);
     }
   };
-
   
   var opts = {
       backdrop: true,

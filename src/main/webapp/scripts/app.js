@@ -3,8 +3,8 @@
 /* App Module */
 
 angular.module('bookmarks', 
-    ['bookmarksCtrl', 'ui.bootstrap', 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'messaging', 'markdown.directives'])
-.config(['$routeProvider', function($routeProvider) {
+    ['bookmarksCtrl', 'ui.bootstrap', 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'messaging', 'markdown.directives', 'modalWindowDecisionService'])
+.config(['$routeProvider', 'showModalWindowProvider', function($routeProvider, showModalWindowProvider) {
   $routeProvider.
   when('/bookmarks', {
 	  templateUrl: '/partials/bookmark-list', 
@@ -22,6 +22,8 @@ angular.module('bookmarks',
 	  templateUrl: '/partials/about'
   }).
   otherwise({redirectTo: '/bookmarks'});
+  
+  showModalWindowProvider.setMaxModalWidth(767);
 }])
 
 .run(['Bookmark', 'loadingTopic', function (Bookmark, loadingTopic) {
