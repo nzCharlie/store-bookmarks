@@ -117,7 +117,7 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
   return Bookmark;
 } ])
 
-.factory('HomeRedirectService', ['$location', function ($location){
+.factory('HomeRedirect', ['$location', function ($location){
   return function () {
     $location.path('/bookmarks');
   };
@@ -147,5 +147,5 @@ angular.module('modalWindowDecisionService', [])
     return function () {
       return $(window).width() >= maxModalWidth;
     };
-  }
+  };
 });

@@ -6,8 +6,9 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 
 .controller('BookmarksListCtrl', 
   [ '$scope', 'Bookmark', 'session', '$dialog', '$location', 'showModalWindow',  function($scope, Bookmark, session, $dialog, $location, showModalWindow) {
+   
   Bookmark.listenerDisabled = false; // always enables listeners (for loading screen)
-    
+  
   $scope.isAscendingSort = angular.isUndefined(session.isAscendingSort) ? true : session.isAscendingSort;
   $scope.sortSelection = angular.isUndefined(session.sortSelection) ? 'name' : session.sortSelection;
 
@@ -25,7 +26,7 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   updateSortOrder();
 
   function load() {
-    $scope.bookmarks = Bookmark.query({});
+    return $scope.bookmarks = Bookmark.query({});
   };
 
   $scope.deleteBookmark = function(bookmark) {
@@ -65,49 +66,37 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   };
   function openModal(action, id) {
     opts.resolve = {
-        'action' : function () { return action; },
-        'bookmark': function () { 
-          if (action == 'Edit') {
-            var bookmark = Bookmark.get({
-              bookmarkId : id
+        // overriding id resolution
+        'bookmarkId' : function () { 
+          return id; 
+        },
+        // overriding the default HomeRedirect service with our own...
+        'HomeRedirect': function () {
+          return function () {           
+            Bookmark.listenerDisabled = false; 
+            load().$then(function (){
+              dialog.close();
             });
-            return bookmark;
-          }
+          };
         }
     };
     var dialog = $dialog.dialog(opts);
-    dialog.open('/partials/bookmark-detail-modal', 'BookmarkDetailModalCtrl');
+    
+    var controller = '';
+    if (action == 'Add') {
+      controller = 'BookmarkAddCtrl';
+    }
+    else if (action == 'Edit') {
+      controller = 'BookmarkEditCtrl';
+    }
+    
+    dialog.open('/partials/bookmark-detail-modal', controller);
   };
   
 } ])
 
-.controller('BookmarkDetailModalCtrl', ['$scope', 'dialog', 'action', 'bookmark', function($scope, dialog, action, bookmark){
-  $scope.action = action;
-  $scope.isReady = false;
-  
-  if (action == 'Edit') {
-    bookmark.$then(function () {
-      $scope.name = bookmark.name;
-      $scope.url = bookmark.url;
-      $scope.description = bookmark.description;
-      
-      $scope.isReady = true;
-    });
-  }
-  else {
-    $scope.isReady = true;    
-  }
-
-  $scope.$on('submit', function (event, bookmark){
-    dialog.close(bookmark);
-  });
-  $scope.$on('canceled', function (event){
-    dialog.close();
-  });
-}])
-
 .controller('BookmarkAddCtrl', 
-  [ '$scope', 'Bookmark', 'HomeRedirectService', function($scope, Bookmark, HomeRedirectService) {
+  [ '$scope', 'Bookmark', 'HomeRedirect', function($scope, Bookmark, HomeRedirect) {
       
   $scope.action = 'Add';
   Bookmark.listenerDisabled = true;
@@ -120,21 +109,21 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
 
     Bookmark.create(bookmark, function() {
       $scope.$broadcast('saved');
-      HomeRedirectService();
+      HomeRedirect(bookmark);
     });
   });
   
-  $scope.$on('canceled', HomeRedirectService);
+  $scope.$on('canceled', HomeRedirect);
 } ])
 
 .controller('BookmarkEditCtrl', 
-  [ '$scope', 'Bookmark', '$routeParams', 'HomeRedirectService', function($scope, Bookmark, $routeParams, HomeRedirectService) {
+  [ '$scope', 'Bookmark', 'bookmarkId', 'HomeRedirect', function($scope, Bookmark, bookmarkId, HomeRedirect) {
     
   $scope.action = 'Edit';
   $scope.isReady = false;
 
   var bookmark = Bookmark.get({
-    bookmarkId : $routeParams.bookmarkId
+    'bookmarkId' : bookmarkId
   }, function() {
     $scope.name = bookmark.name;
     $scope.url = bookmark.url;
@@ -162,11 +151,11 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
       bookmarkId : ''
     }, function() {
       $scope.$broadcast('saved');
-      HomeRedirectService();
+      HomeRedirect(bookmark);
     });
   });
   
-  $scope.$on('canceled', HomeRedirectService);
+  $scope.$on('canceled', HomeRedirect);
 } ])
 
 .controller('BookmarkFormCtrl', 

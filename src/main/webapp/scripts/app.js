@@ -2,6 +2,11 @@
 
 /* App Module */
 
+function getBookmarkId($route){
+  return $route.current.params.bookmarkId;
+}
+getBookmarkId.$inject = ['$route'];
+
 angular.module('bookmarks', 
     ['bookmarksCtrl', 'ui.bootstrap', 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'messaging', 'markdown.directives', 'modalWindowDecisionService'])
 .config(['$routeProvider', 'showModalWindowProvider', function($routeProvider, showModalWindowProvider) {
@@ -16,7 +21,10 @@ angular.module('bookmarks',
   }).
   when('/bookmarks/edit/:bookmarkId', {
 	  templateUrl: '/partials/bookmark-detail', 
-	  controller: 'BookmarkEditCtrl'
+	  controller: 'BookmarkEditCtrl',
+	  resolve: {
+	    'bookmarkId': getBookmarkId
+	  }
   }).
   when('/about', {
 	  templateUrl: '/partials/about'
