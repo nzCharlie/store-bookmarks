@@ -63,7 +63,16 @@ angular.module('ui.directives', [ 'ui.bootstrap' ])
 		controller : navCtrl,
 		replace : true
 	};
-});
+})
+
+// TODO create actionable button that will change to spinning icon when pressed and awaits for callback to back to normal.
+// example: delete/edit/save buttons 
+//.directive('action', function() {
+//  return {
+//    
+//  };
+//})
+;
 
 /**
  * Loader directive
