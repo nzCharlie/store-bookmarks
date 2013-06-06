@@ -34,14 +34,14 @@ angular.module('bookmarks',
   showModalWindowProvider.setMaxModalWidth(767);
 }])
 
-.run(['Bookmark', 'loadingTopic', function (Bookmark, loadingTopic) {
+.run(['Bookmark', 'loadingTopic', 'showModalWindow', function (Bookmark, loadingTopic, showModalWindow) {
   Bookmark.addStartListener(function (service) {
-    if (service == 'query' || service == 'delete') {
+    if (service == 'query' || service == 'delete' || service == 'remove' || (!showModalWindow() && service == 'get')) {
       loadingTopic.dispatch('startLoading');
     }
   });
   Bookmark.addFinishListener(function (service) {
-    if (service == 'query' || service == 'delete') {
+    if (service == 'query' || service == 'delete' || service == 'remove' || (!showModalWindow() && service == 'get')) {
       loadingTopic.dispatch('finishLoading');
     }
   });
