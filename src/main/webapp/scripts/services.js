@@ -72,33 +72,33 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
     finishListeners.removeListeners(key);
   };
   
-  bookmarkTopic.addListener(function (event) {
+  bookmarkTopic.addListener(function (event, service) {
     if (event == 'start') {
       //console.log('start listener size: ' + startListeners.size());
       angular.forEach(startListeners.listeners, function (value, key) {
-        value.call(Bookmark);
+        value.call(Bookmark, service);
       });
     }
     else if (event == 'finish') {
       //console.log('finish listener size: ' + finishListeners.size());
       angular.forEach(finishListeners.listeners, function (value, key) {
-        value.call(Bookmark);
+        value.call(Bookmark, service);
       });
     }
   });
 
-  function topicDispatchEvent(event) {
+  function topicDispatchEvent(event, service) {
     if (!Bookmark.listenerDisabled) 
-      bookmarkTopic.dispatch(event);
+      bookmarkTopic.dispatch(event, service);
   };
 
-  function topicDispatchFinishEvent() {
-    topicDispatchEvent('finish');
-  };
-
-  function NotifyAdvice(func) {
+  function NotifyAdvice(func, service) {
+    function topicDispatchFinishEvent() {
+      topicDispatchEvent('finish', service);
+    };
+    
     var returned = function() {
-      topicDispatchEvent('start');
+      topicDispatchEvent('start', service);
       var value =  func.apply(Bookmark, arguments);
       value.$then(topicDispatchFinishEvent, topicDispatchFinishEvent);
       return value;
@@ -107,12 +107,12 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
     return returned;
   };
   
-  Bookmark['query'] = NotifyAdvice(Bookmark['query']);
-  Bookmark['get'] = NotifyAdvice(Bookmark['get']);
-  Bookmark['create'] = NotifyAdvice(Bookmark['create']);
-  Bookmark['save'] = NotifyAdvice(Bookmark['save']);
-  Bookmark['remove'] = NotifyAdvice(Bookmark['remove']);
-  Bookmark['delete'] = NotifyAdvice(Bookmark['delete']);
+  Bookmark['query'] = NotifyAdvice(Bookmark['query'], 'query');
+  Bookmark['get'] = NotifyAdvice(Bookmark['get'], 'get');
+  Bookmark['create'] = NotifyAdvice(Bookmark['create'], 'create');
+  Bookmark['save'] = NotifyAdvice(Bookmark['save'], 'save');
+  Bookmark['remove'] = NotifyAdvice(Bookmark['remove'], 'remove');
+  Bookmark['delete'] = NotifyAdvice(Bookmark['delete'], 'delete');
   
   return Bookmark;
 } ])
@@ -121,7 +121,12 @@ angular.module('bookmarksServices', [ 'ngResource', 'messaging' ])
   return function () {
     $location.path('/bookmarks');
   };
-}]);
+}])
+
+.factory('CancelHomeRedirect', ['HomeRedirect', function (HomeRedirect) {
+  return HomeRedirect;
+}])
+;
 
 angular.module('sessionService', [])
 .factory('session', function() {

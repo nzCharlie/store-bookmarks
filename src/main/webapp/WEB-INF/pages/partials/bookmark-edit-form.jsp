@@ -9,7 +9,7 @@
 	          ng-model="name" required ng-disabled="!isReady"
 	          placeholder="Name of the bookmark">
 	      </div>
-	      <span class="error" ng-show="bookmarkForm.name.$error.required" class="help-inline">Required</span>
+	      <span class="error" ng-show="bookmarkForm.name.$error.required && isReady" class="help-inline">Required</span>
 	      </div>
 	  </div>
 	  
@@ -22,7 +22,7 @@
 	          ng-model="url" required ng-disabled="!isReady"
 	          placeholder="URL of the bookmark, e.g. http://www.google.com">
 	      </div>
-	      <span class="error" ng-show="bookmarkForm.url.$error.required" class="help-inline">Required</span>
+	      <span class="error" ng-show="bookmarkForm.url.$error.required && isReady" class="help-inline">Required</span>
 	      <span class="error" ng-show="bookmarkForm.url.$error.url" class="help-inline">Invalid URL</span>
 	      </div>
 	  </div>

@@ -35,10 +35,14 @@ angular.module('bookmarks',
 }])
 
 .run(['Bookmark', 'loadingTopic', function (Bookmark, loadingTopic) {
-  Bookmark.addStartListener(function () {
-    loadingTopic.dispatch('startLoading');
+  Bookmark.addStartListener(function (service) {
+    if (service == 'query' || service == 'delete') {
+      loadingTopic.dispatch('startLoading');
+    }
   });
-  Bookmark.addFinishListener(function () {
-    loadingTopic.dispatch('finishLoading');
+  Bookmark.addFinishListener(function (service) {
+    if (service == 'query' || service == 'delete') {
+      loadingTopic.dispatch('finishLoading');
+    }
   });
 }]);
