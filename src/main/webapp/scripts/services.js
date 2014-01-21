@@ -163,7 +163,7 @@ angular.module('SecurityService', [])
 
 .provider('Authentication', function AuthenticationProvider() {
   this.$get = ['$http', 'authenticationTopic', function ($http, authenticationTopic) {
-    var user = '';
+    var user = ''; // user need to be kept for across pages
     return {
       login: function (username, password) {
         user = username;
