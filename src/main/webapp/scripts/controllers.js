@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'modalWindowDecisionService' ])
+angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'modalWindowDecisionService', 'SecurityService'])
 
 .controller('BookmarksListCtrl', 
   [ '$scope', 'Bookmark', 'session', '$dialog', '$location', 'showModalWindow',  function($scope, Bookmark, session, $dialog, $location, showModalWindow) {
@@ -194,4 +194,34 @@ angular.module('bookmarksCtrl', [ 'bookmarksServices', 'sessionService', 'ui.dir
   $scope.$on('saved', function() {
     $scope.isSaving = false;
   });
-} ]);
+} ])
+
+.controller('LoginFormCtrl',
+[ '$scope', 'authenticationTopic', 'Authentication', function($scope, authenticationTopic, Authentication) {
+  $scope.currentUser = '';
+  $scope.shown = false;
+  authenticationTopic.addListener(function (event, user)
+  {
+    if (event == 'login') {
+      $scope.currentUser = user;      
+    }
+    else if (event == 'logout' && user == $scope.currentUser) {
+      $scope.currentUser = '';
+    }
+  });
+  $scope.toggle = function() {
+    $scope.shown = !$scope.shown;
+  };
+  $scope.isAuthenticated = function () {
+    return $scope.currentUser != '';
+  };
+  $scope.login = function () {
+    console.log('login: ' + $scope.userInput + ':' + $scope.passwordInput);
+    Authentication.login($scope.userInput, $scope.passwordInput);
+  };
+  $scope.logout = function () {
+    console.log('logout: ' + $scope.currentUser);
+    Authentication.logout();
+  };
+} ])
+;

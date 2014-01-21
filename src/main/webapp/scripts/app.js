@@ -8,7 +8,8 @@ function getBookmarkId($route){
 getBookmarkId.$inject = ['$route'];
 
 angular.module('bookmarks', 
-    ['bookmarksCtrl', 'ui.bootstrap', 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'messaging', 'markdown.directives', 'modalWindowDecisionService'])
+    ['bookmarksCtrl', 'ui.bootstrap', 'bookmarksServices', 'sessionService', 'ui.directives', 'loader.directives', 'messaging', 'markdown.directives', 'modalWindowDecisionService', 'SecurityService'])
+
 .config(['$routeProvider', 'showModalWindowProvider', function($routeProvider, showModalWindowProvider) {
   $routeProvider.
   when('/bookmarks', {

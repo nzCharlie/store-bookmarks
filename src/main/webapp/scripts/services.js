@@ -154,3 +154,24 @@ angular.module('modalWindowDecisionService', [])
     };
   };
 });
+
+angular.module('SecurityService', [])
+
+.factory('authenticationTopic', [ 'EventDispatcher', function(EventDispatcher) {
+	return EventDispatcher.getInstance("authenticationTopic");
+} ])
+
+.provider('Authentication', function AuthenticationProvider() {
+  this.$get = ['$http', 'authenticationTopic', function ($http, authenticationTopic) {
+    var user = '';
+    return {
+      login: function (username, password) {
+        user = username;
+        authenticationTopic.dispatch('login', user);
+      },
+      logout: function () {
+        authenticationTopic.dispatch('logout', user);
+      }
+    };
+  }];
+});

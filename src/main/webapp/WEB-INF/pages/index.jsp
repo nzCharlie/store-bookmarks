@@ -111,9 +111,16 @@
       	color: #fff;
       }
       
+      #login {
+        position: absolute;
+        top: 50px;
+        background-color: lightgray;
+        padding: 10px;
+      }
+
   </style>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-resource.min.js"></script>
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.3.0.js"></script>
   <script src="lib/jquery.autosize-min.js"></script>
@@ -135,6 +142,24 @@
         <nav href="/bookmarks" icon-class="icon-home" title="Home" match-exp="/bookmarks(/.+)?"></nav>
         <nav href="/about" icon-class="icon-user" title="About"></nav>
       </menu>
+      
+      <div id="login" ng-controller="LoginFormCtrl" >
+        <span ng-show="isAuthenticated()"><i class="icon-user"></i></span> {{currentUser}}
+        <a class="btn btn-mini" ng-click="toggle()" ng-hide="isAuthenticated()"><i class="icon-user"></i> Login</a>
+        <div ng-show="shown">
+	<form ng-submit="login()" ng-hide="isAuthenticated()">
+	  <div class="control-group">
+	    <label class="control-label" for="name">Username:</label>
+	    <input name="userInput" class="form-control" type="text" ng-model="userInput" required>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="name">Password:</label>
+	    <input name="password" class="form-control" type="password" ng-model="passwordInput" required>
+	  </div>
+	  <input class="btn-primary" type="submit" value="Login">
+	</form>
+        </div>
+      </div>
 
       <!-- Begin page content -->     
       <div id="main">
