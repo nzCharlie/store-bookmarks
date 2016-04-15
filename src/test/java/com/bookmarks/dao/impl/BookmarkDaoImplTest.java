@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.bookmarks.models.Bookmark;
 	"classpath*:applicationContext-dataSource.xml"
 })
 @Transactional
+@Ignore("DB Unit tests are of questionable value.")
 public class BookmarkDaoImplTest {
 
 	private BookmarkDao bookmarkDao;
